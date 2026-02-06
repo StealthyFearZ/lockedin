@@ -29,6 +29,25 @@
                     {% endif %}
 
                     <!-- ADD THE SOCIAL LINKS HERE-->
+                    <div class="mb-3">
+                        {% if profile.linkedin_url %}
+                            <a href="{{ profile.linkedin_url }}" target="_blank" class="btn btn-sm btn-outline-primary me-2">
+                                <i class="fab fa-linkedin"></i> LinkedIn
+                            </a>
+                        {% endif %}
+                        {% if profile.github_url %}
+                            <a href="{{ profile.github_url }}" target="_blank" class="btn btn-sm btn-outline-dark me-2">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        {% endif %}
+                        {% if profile.portfolio_url %}
+                            <a href="{{ profile.portfolio_url }}" target="_blank" class="btn btn-sm btn-outline-info me-2">
+                                <i class="fa-solid fa-address-book"></i> Portfolio
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    
                 </div>
             </div>
         </div>
