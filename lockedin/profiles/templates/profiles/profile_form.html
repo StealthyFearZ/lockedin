@@ -64,6 +64,20 @@
                             {{ form.linkedin_url }}
                         </div>
 
+                        <div class="mb-3">
+                            <label for="{{ form.github_url.id_for_label }}" class="form-label">
+                                <i class="fab fa-github"></i> {{ form.github_url.label }}
+                            </label>
+                            {{ form.github_url }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.portfolio_url.id_for_label }}" class="form-label">
+                                <i class="fas fa-globe"></i> {{ form.portfolio_url.label }}
+                            </label>
+                            {{ form.portfolio_url }}
+                        </div>
+
                         <!-- ADD "Cancel Button" or "Save Changes" BUTTONS-->
                     </form>
                 </div>
