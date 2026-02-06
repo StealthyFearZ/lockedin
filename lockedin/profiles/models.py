@@ -12,6 +12,7 @@ class Profile(models.Model):
     github_url   = models.URLField(blank=True, validators=[URLValidator()])
 
     time_created = models.DateTimeField(auto_now_add=True)
+    time_updated = models.DateTimeField(auto_now=True)
     
 
     
