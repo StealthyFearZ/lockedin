@@ -18,5 +18,15 @@ class Profile(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
+    
+    def get_skills_list(self):
+        # Return a List of Skills
+        return [skill.strip() for skill in self.skills.split(',') if skill.strip()]
+    
+    class Meta:
+        ordering = ['-time_created']
+
 
     
