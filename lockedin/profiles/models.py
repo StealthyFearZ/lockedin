@@ -12,6 +12,8 @@ class Profile(models.Model):
     profile_pic  = models.ImageField(null=True, upload_to='profile_pictures/', blank=True)
     # URL Links
     github_url   = models.URLField(blank=True, validators=[URLValidator()])
+    linkedin_url = models.URLField(blank=True, validators=[URLValidator()])
+    portfolio_url = models.URLField(blank=True, validators=[URLValidator()])
     # Times
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
