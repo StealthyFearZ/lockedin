@@ -46,6 +46,11 @@
                             </a>
                         {% endif %}
                     </div>
+                    {% if is_own_profile %}
+                        <a href="{% url 'profiles.edit' %}" class="btn btn-primary">
+                            <i class="fa-solid fa-file-pen"></i> Edit Profile
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
