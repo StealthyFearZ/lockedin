@@ -24,7 +24,7 @@ def profile_view(request, username=None):
     return render(request, 'profiles/profile_detail.html', context)
 
 @login_required
-def profile_create(request):
+def profile_edit(request):
     # Create / Update Profile
     profile, created = Profile.objects.get_or_create(user=request.user)
 
