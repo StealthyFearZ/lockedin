@@ -78,7 +78,13 @@
                             {{ form.portfolio_url }}
                         </div>
 
-                        <!-- ADD "Cancel Button" or "Save Changes" BUTTONS-->
+                        <!-- ADD "Cancel Button" and "Save Changes" BUTTONS-->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'profiles.detail' username=user.username %}" 
+                               class="btn btn-secondary">
+                                <i class="fa-solid fa-xmark"></i> Cancel
+                            </a>
+                        </div>
                     </form>
                 </div>
             </div>
