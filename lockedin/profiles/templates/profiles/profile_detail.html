@@ -47,7 +47,19 @@
                         {% endif %}
                     </div>
 
-                    
+                    <!-- Add About Section here -->
+                    {% if profile.about %}
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-user-circle"></i> About</h5>
+                        </div>
+                        <div class="card-body">
+                            <p style="white-space: pre-line;">{{ profile.about }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+
                 </div>
             </div>
         </div>
