@@ -80,8 +80,11 @@
 
                         <!-- ADD "Cancel Button" and "Save Changes" BUTTONS-->
                         <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Profile
+                            </button>
                             <a href="{% url 'profiles.detail' username=user.username %}" 
-                               class="btn btn-secondary">
+                               class="btn btn-danger">
                                 <i class="fa-solid fa-xmark"></i> Cancel
                             </a>
                         </div>
