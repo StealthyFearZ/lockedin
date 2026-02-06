@@ -46,40 +46,36 @@
                             </a>
                         {% endif %}
                     </div>
-
-                    <!-- Add About Section here -->
-                    {% if profile.about %}
-                    <div class="card mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0"><i class="fas fa-user-circle"></i> About</h5>
-                        </div>
-                        <div class="card-body">
-                            <p style="white-space: pre-line;">{{ profile.about }}</p>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    <!-- Skills Section -->
-                    {% if profile.skills %}
-                    <div class="card mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0"><i class="fa-solid fa-hammer"></i> Skills</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex flex-wrap gap-2">
-                                {% for skill in profile.get_skills_list %}
-                                    <span class="badge bg-secondary px-3 py-2">{{ skill }}</span>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-
                 </div>
             </div>
         </div>
     </div>
+    <!-- Add About Section here -->
+    {% if profile.about %}
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-user-circle"></i> About</h5>
+        </div>
+        <div class="card-body">
+            <p style="white-space: pre-line;">{{ profile.about }}</p>
+        </div>
+    </div>
+    {% endif %}
 
-    <!--Social Links-->
+    <!-- Skills Section -->
+    {% if profile.skills %}
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fa-solid fa-hammer"></i> Skills</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-flex flex-wrap gap-2">
+                {% for skill in profile.get_skills_list %}
+                    <span class="badge bg-secondary px-3 py-2">{{ skill }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock content %}
