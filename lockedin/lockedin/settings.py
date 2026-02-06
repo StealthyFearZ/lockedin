@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
-    'profiles'
+    'profiles',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     BASE_DIR / 'lockedin/static/',
 ]
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/profiles/'
+LOGOUT_REDIRECT_URL = '/'
