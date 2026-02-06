@@ -8,10 +8,32 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-2 text-center">
-                    <h5 class="mb-0"> Profile Header</h5>
+                    <!-- Add Profile Picture to the left-->
+                    {% if profile.profile_pic %}
+                        <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" 
+                             class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                    {% else %}
+                        <!-- Add defualt profile pic if there is none-->
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mx-auto" 
+                             style="width: 150px; height: 150px;">
+                            <i class="fas fa-user fa-4x text-white"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <!-- Should be name or username-->
+                    <h2>{{ profile.user.get_full_name|default:profile.user.username }}</h2>
+                    {% if profile.headline %}
+                        <!-- Should looks similar to linkedIn, sort of...-->
+                        <p class="text-muted mb-2"><strong>{{ profile.headline }}</strong></p>
+                    {% endif %}
+
+                    <!-- ADD THE SOCIAL LINKS HERE-->
                 </div>
             </div>
         </div>
     </div>
+
+    <!--Social Links-->
 </div>
 {% endblock content %}
