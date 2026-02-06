@@ -18,8 +18,8 @@ def profile_view(request, username=None):
 
     context = {
         'profile' : profile,
-        'is_their_profile' : request.user == user,
-        'template_data' : {'profile_name' : f"{user.username}'s Profile"}
+        'is_own_profile' : request.user == user,
+        'template_data' : {'title' : f"{user.username}'s Profile"}
     }
     return render(request, 'profiles/profile_detail.html', context)
 
@@ -33,7 +33,7 @@ def profile_edit(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile Updated')
-            return redirect('profiles:profile_detail', username=request.user.username)
+            return redirect('profiles.detail', username=request.user.username)
     else:
         form = ProfileForm(instance=profile)
     
