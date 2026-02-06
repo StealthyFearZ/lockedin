@@ -45,8 +45,14 @@
                             </label>
                             {{ form.about }}
                         </div>
-                        
+
                         <!-- ADD SKILLS-->
+                        <div class="mb-3">
+                            <label for="{{ form.skills.id_for_label }}" class="form-label">
+                                {{ form.skills.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.skills }}
+                        </div>
 
                         <!-- ADD SOCIAL LINKS-->
 
