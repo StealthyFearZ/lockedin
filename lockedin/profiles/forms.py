@@ -40,3 +40,12 @@ class ProfileForm(forms.ModelForm):
                 'placeholder': 'https://yourportfolio.com'
             }),
         }
+        labels = {
+            'headline': 'Professional Headline',
+            'about': 'About Me',
+            'skills': 'Skills',
+            'profile_picture': 'Profile Picture',
+            'linkedin_url': 'LinkedIn URL',
+            'github_url': 'GitHub URL',
+            'portfolio_url': 'Portfolio Website',
+        }
