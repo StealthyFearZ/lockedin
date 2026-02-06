@@ -14,6 +14,20 @@
                         {% csrf_token %}
 
                         <!-- ADD PROFILE PICTURE-->
+                        <div class="mb-3">
+                            <label for="{{ form.profile_pic.id_for_label}}" class="form-label">
+                                {{ form.profile_pic.label }}
+                            </label>
+                            {{ form.profile_pic }}
+                            <!-- Display the current profile pic if exists-->
+                            {% if profile.profile_pic %}
+                                <div class="mt-2">
+                                    <!-- Add the actual img-->
+                                    <img src="{{ profile.profile_pic.url }}" 
+                                         class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
+                                </div>
+                            {% endif %}
+                        </div>
 
                         <!-- ADD HEADLINE-->
 
