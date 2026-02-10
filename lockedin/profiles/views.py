@@ -70,7 +70,27 @@ def add_experience(request):
 
 @login_required
 def edit_experience(request, exp_id):
-    return None
+    # Edit old Experience
+    # Get Associated Experience
+    work_exp = get_object_or_404(Experience, exp_id=exp_id, profile__user=request.user)
+
+    if request.method == 'POST':
+        form = ExperienceForm(request.POST, instance=work_exp)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Experience Updated!")
+            return redirect('profiles.detail', username=request.user.username)
+    else:
+        form = Experience(instance=work_exp)
+
+    context = {
+        'form' : form,
+        'work_exp' : work_exp,
+        'title' : 'Edit Experience',
+        'template_data' : {'title': 'Edit Experience'}
+    }
+    return render(request, 'profiles/experience_form.html', context)
+
 
 @login_required
 def delete_experience(request, exp_id):
