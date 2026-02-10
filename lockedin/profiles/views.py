@@ -46,7 +46,27 @@ def profile_edit(request):
 
 @login_required
 def add_experience(request):
-    return None
+    # Add new Experience
+    # Get Associated Profile
+    profile = get_object_or_404(Profile, user=request.user)
+
+    if request.method == 'POST':
+        form = ExperienceForm(request.POST)
+        if form.is_valid():
+            work_exp = form.save(commit=False)
+            work_exp.profile = profile
+            work_exp.save()
+            messages.success(request, 'Added Experience!')
+            return redirect('profiles.detail', username=request.user.username)
+        else:
+            form = ExperienceForm()
+
+        context = {
+            'form' : form,
+            'title' : 'Add Experience',
+            'template_data' : {'title', 'Add Experience'}
+        }
+    return render(request, 'profiles/experience_form.html', context)
 
 @login_required
 def edit_experience(request, exp_id):
