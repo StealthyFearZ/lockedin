@@ -18,6 +18,7 @@ class Profile(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
 
+    # Functions
     def __str__(self):
         return f"{self.user.username}'s Profile"
     
@@ -38,10 +39,11 @@ class Experience(models.Model):
     description = models.TextField()
     current_job = models.BooleanField(default=False)
     company     = models.CharField(max_length=150)
-
+    # Times
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
 
+    # Functions
     def __str__(self):
         return f"{self.job} @ {self.company}"
     
