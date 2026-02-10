@@ -37,6 +37,15 @@
                         </div>
 
                         <!-- Company -->
+                        <div class="mb-3">
+                            <label for="{{ form.company.id_for_label }}" class="form-label">
+                                {{ form.company.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.company }}
+                            {% if form.company.errors %}
+                                <div class="text-danger small mt-1">{{ form.company.errors }}</div>
+                            {% endif %}
+                        </div>
 
                         <!-- Location -->
 
