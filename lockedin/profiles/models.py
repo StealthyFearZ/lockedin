@@ -28,5 +28,25 @@ class Profile(models.Model):
     class Meta:
         ordering = ['-time_created']
 
+class Experience(models.Model):
+    # Model Information
+    profile     = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='experiences')
+    start_date  = models.DateField()
+    end_date    = models.DateField(blank = True, null=True)
+    job         = models.CharField(max_length=150)
+    location    = models.CharField(max_length=150)
+    description = models.TextField()
+    current_job = models.BooleanField(default=False)
+    company     = models.CharField(max_length=150)
+
+    time_created = models.DateTimeField(auto_now_add=True)
+    time_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.job} @ {self.company}"
+    
+    class Meta:
+        ordering = ['-start_date']
+
 
     
