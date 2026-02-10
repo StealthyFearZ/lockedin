@@ -56,4 +56,34 @@ class ExperienceForm(forms.ModelForm):
     class Meta:
         model = Experience
         fields = ['job', 'company', 'location', 'start_data',
-                 'end_data', 'currently_working', 'description']
+                 'end_data', 'current_job', 'description']
+        widgets = {
+            'job' : forms.TextInput(attrs={
+                'class' : 'form-control',
+                'placeholder' : 'Ex: VLSI Engineer'
+            }),
+            'company' : forms.TextInput(attrs={
+                'class' : 'form-control',
+                'placeholder' : 'Ex: NVIDIA'
+            }),
+            'location' : forms.TextInput(attrs={
+                'class' : 'form-control',
+                'placeholder' : 'Ex: Santa Clara, CA'
+            }),
+            'start_date' : forms.DateInput(attrs={
+                'class' : 'form-control',
+                'type' : 'date'
+            }),
+            'end_date' : forms.DateInput(attrs={
+                'class' : 'form-control',
+                'type' : 'date'
+            }),
+            'current_job' : forms.CheckboxInput(attrs={
+                'class' : 'form-check-input'
+            }),
+            'description' : forms.Textarea(attrs={
+                'class' : 'form-control',
+                'rows' : 4,
+                'placeholder' : 'Describe your experience'
+            }),
+        }
