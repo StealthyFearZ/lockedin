@@ -87,3 +87,26 @@ class ExperienceForm(forms.ModelForm):
                 'placeholder' : 'Describe your experience'
             }),
         }
+    
+    # Add Method to clean work Experience
+    def clean(self):
+        clean_data = super().clean
+        current_job = clean_data.get('current_job')
+        start_date  = clean_data.get('start_date')
+        end_date    = clean_data.get('end_date')
+
+        # If working a current job, then there should be no end date
+        if current_job:
+            clean_data['end_date'] = None
+        elif not end_date:
+            raise forms.ValidationError(
+                'Must provide an end date, or check "Currently Working Here'
+            )
+        
+        # Start Date must be before End Date
+        if end_date and start_date and start_date > end_date:
+            raise forms.ValidationError(
+                "Start Date must be before End Date"
+            )
+        
+        return clean_data
