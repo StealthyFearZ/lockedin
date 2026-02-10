@@ -26,6 +26,15 @@
                         {% endif %}
 
                         <!-- Job -->
+                        <div class="mb-3">
+                            <label for="{{ form.job.id_for_label }}" class="form-label">
+                                {{ form.job.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.job }}
+                            {% if form.job.errors %}
+                                <div class="text-danger small mt-1">{{ form.job.errors }}</div>
+                            {% endif %}
+                        </div>
 
                         <!-- Company -->
 
