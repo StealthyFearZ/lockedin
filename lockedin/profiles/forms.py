@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile
+from .models import Profile, Experience
 
 class ProfileForm(forms.ModelForm):
     # Creates and Updates Profiles
@@ -49,3 +49,11 @@ class ProfileForm(forms.ModelForm):
             'github_url': 'GitHub URL',
             'portfolio_url': 'Portfolio Website',
         }
+
+class ExperienceForm(forms.ModelForm):
+    # CRUD for Experiences
+
+    class Meta:
+        model = Experience
+        fields = ['job', 'company', 'location', 'start_data',
+                 'end_data', 'currently_working', 'description']
