@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Profile
-from .forms import ProfileForm
+from .models import Profile, Experience
+from .forms import ProfileForm, ExperienceForm
 
 # Create your views here.
 @login_required
@@ -43,3 +43,15 @@ def profile_edit(request):
         'template_data' : {'title' : 'Edit Profile'}
     }
     return render(request, 'profiles/profile_form.html', context)
+
+@login_required
+def add_experience(request):
+    return None
+
+@login_required
+def edit_experience(request, exp_id):
+    return None
+
+@login_required
+def delete_experience(request, exp_id):
+    return None
