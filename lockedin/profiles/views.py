@@ -94,4 +94,17 @@ def edit_experience(request, exp_id):
 
 @login_required
 def delete_experience(request, exp_id):
-    return None
+    # Delete old Experience
+    # Get Associated Experience
+    work_exp = get_object_or_404(Experience, exp_id=exp_id, profile__user=request.user)
+
+    if request.method == 'POST':
+        work_exp.delete()
+        messages.success(request, 'Experience Deleted!')
+        return redirect('profiles.detail', username=request.user.username)
+    
+    context = {
+        'work_exp' : work_exp,
+        'template_data' : {'title' : 'Delete Experience'}
+    }
+    return render(request, 'profiles/experience_delete.html', context)
