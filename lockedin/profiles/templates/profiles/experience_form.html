@@ -48,7 +48,16 @@
                         </div>
 
                         <!-- Location -->
-
+                        <div class="mb-3">
+                            <label for="{{ form.location.id_for_label }}" class="form-label">
+                                {{ form.location.label }}
+                            </label>
+                            {{ form.location }}
+                            {% if form.location.errors %}
+                                <div class="text-danger small mt-1">{{ form.location.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
                         <!-- Dates -->
 
                         <!-- Current Job -->
