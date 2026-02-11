@@ -21,7 +21,7 @@ class Job(models.Model):
         return str(self.recruiter) + " - " + str(self.title)
 
 # intermediary model
-class Applications(models.Model):
+class Application(models.Model):
     # type enum (hardcoded application type)
     class ApplicationChoices(models.TextChoices):
         APPLIED = "AP", "Applied"
