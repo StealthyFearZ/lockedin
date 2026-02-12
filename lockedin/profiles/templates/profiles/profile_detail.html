@@ -114,13 +114,28 @@
                              <p class="text-muted small mb-2">
                                 <i class="far fa-calendar"></i>
                                 {{ work_exp.start_date|date:"M Y" }} -
-                                {{ work_exp.end_date|date:"M Y" }}
+                                {% if work_exp.current_job %}
+                                    <span class="badge bg-primary">Present</span>
+                                {% else %}
+                                    {{ work_exp.end_date|date:"M Y" }}
+                                {% endif %}
                              </p>
                             <!-- Add Description -->
                              <p style="white-space: pre-line;">
                                 {{ work_exp.description }}
                              </p>
                         </div>
+                        <!-- Add Edit / Delete Option if it's your own Profile -->
+                        {% if is_own_profile %}
+                            <div class="btn-group">
+                                <!-- Add Link for Edit -->
+                                <a href="{% url 'profiles.edit_experience' work_exp.pk %}"
+                                    class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <!-- Add Link for Delete -->
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
