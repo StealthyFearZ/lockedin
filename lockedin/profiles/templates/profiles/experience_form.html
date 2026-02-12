@@ -28,6 +28,7 @@
                         <!-- Job -->
                         <div class="mb-3">
                             <label for="{{ form.job.id_for_label }}" class="form-label">
+                                <!-- REQUIRED info-->
                                 {{ form.job.label }} <span class="text-danger">*</span>
                             </label>
                             {{ form.job }}
@@ -39,6 +40,7 @@
                         <!-- Company -->
                         <div class="mb-3">
                             <label for="{{ form.company.id_for_label }}" class="form-label">
+                                <!-- REQUIRED INFO -->
                                 {{ form.company.label }} <span class="text-danger">*</span>
                             </label>
                             {{ form.company }}
@@ -95,6 +97,17 @@
                         </div>
 
                         <!-- Description -->
+                        <div class="mb-3">
+                            <label for="{{ form.description.id_for_label }}" class="form-label">
+                                <!-- ADD REQUIRED -->
+                                {{ form.description.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.description }}
+                            <div class="form-text">{{ form.description.help_text }}</div>
+                            {% if form.description.errors %}
+                                <div class="text-danger small mt-1">{{ form.description.errors }}</div>
+                            {% endif %}
+                        </div>
 
                         <!-- Errors -->
 
