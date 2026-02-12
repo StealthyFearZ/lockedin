@@ -93,6 +93,13 @@
                 </a>
             {% endif %}
         </div>
+        <div class="card-body">
+            {% if profile.experiences.all %}
+                {% for work_exp in profile.experiences.all %}
+                <h5>WORK EXPERIENCES WORK</h5>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
 
     <!-- Education Section -->
