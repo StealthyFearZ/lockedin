@@ -96,7 +96,18 @@
         <div class="card-body">
             {% if profile.experiences.all %}
                 {% for work_exp in profile.experiences.all %}
-                <h5>WORK EXPERIENCES WORK</h5>
+                <!-- <h5>WORK EXPERIENCES WORK</h5> -->
+                <div class="mb-4 {% if not forloop.last %} border-bottom pb-3{% endif %}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <!-- Add Job Title -->
+                            <!-- Add Company Name -->
+                            <!-- Add Location -->
+                            <!-- Add Dates -->
+                            <!-- Add Description -->
+                        </div>
+                    </div>
+                </div>
                 {% endfor %}
             {% endif %}
         </div>
