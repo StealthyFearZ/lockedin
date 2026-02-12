@@ -83,9 +83,19 @@
     </div>
     {% endif %}
 
-    <!-- Education Section -->
-
     <!-- Work Experience Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-briefcase"></i> Work Experience </h5>
+            {% if is_own_profile %}
+                <a href="{% url 'profiles.add_experience' %}" class="btn btn-sm btn-light">
+                    <i class="fas fa-plus"></i> Add Experience
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Education Section -->
 
 </div>
 {% endblock content %}
