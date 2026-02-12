@@ -55,8 +55,8 @@ class ExperienceForm(forms.ModelForm):
 
     class Meta:
         model = Experience
-        fields = ['job', 'company', 'location', 'start_data',
-                 'end_data', 'current_job', 'description']
+        fields = ['job', 'company', 'location', 'start_date',
+                 'end_date', 'current_job', 'description']
         widgets = {
             'job' : forms.TextInput(attrs={
                 'class' : 'form-control',
