@@ -84,6 +84,15 @@
                         </div>
 
                         <!-- Current Job -->
+                        <div class="mb-3 form-check">
+                            {{ form.current_job}}
+                            <label class="form-check-label" for="{{ form.current_job.id_for_label }}">
+                                Currently Working Here
+                            </label>
+                            {% if form.current_job.errors %}
+                                <div class="text-danger small mt-1">{{ form.current_job.errors }}</div>
+                            {% endif %}
+                        </div>
 
                         <!-- Description -->
 
