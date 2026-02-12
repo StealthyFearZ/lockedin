@@ -134,6 +134,11 @@
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <!-- Add Link for Delete -->
+                                
+                                <a href="{% url 'profiles.delete_experience' work_exp.pk %}"
+                                    class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                             </div>
                         {% endif %}
                     </div>
