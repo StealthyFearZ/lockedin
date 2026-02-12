@@ -6,9 +6,44 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     search_term = request.GET.get('search')
     if search_term:
-        jobs = Job.objects.filter(title__icontains=search_term)
+        jobs = (Job.objects.filter(title__icontains=search_term) | Job.objects.filter(skills__icontains=search_term)).distinct() #distinct needed to ensure that jobs can be found by name OR skills rather than only if both of them overlap
     else:
         jobs = Job.objects.all()
+
+    location = request.GET.get('location','').strip()
+    if location:
+        jobs = jobs.filter(location__icontains=location)
+
+    classification = request.GET.get('classification','').strip()
+    if location:
+        jobs = jobs.filter(classification__icontains=classification)
+
+    min_salary = request.GET.get('min_salary','').strip()
+    try:
+        min_salary_int = int(min_salary)
+        jobs = jobs.filter(salary_upper__gte=min_salary_int) #gte = Upper Salary bound greater than or equal to Minimum Salary. Filters all jobs that have salaries greater than the minimum bound.
+    except ValueError:
+        pass
+
+    max_salary = request.GET.get('max_salary','').strip()
+    try:
+        max_salary_int = int(max_salary)
+        jobs = jobs.filter(salary_lower__lte=max_salary_int) #lte = Lower Salary bound lesser than or equal to Maximum Salary. Filters all jobs that have lower salaries lesser than the maxmimum bound. Both values ensure the Jobs displayed fall within the filter bounds
+    except ValueError:
+        pass
+
+    sponsorship = request.GET.get('sponsorship','').strip()
+    if sponsorship == "Sponsoring":
+        jobs = jobs.filter(isSponsoring=True)
+    elif sponsorship == "Not Sponsoring":
+        jobs = jobs.filter(isSponsoring=False)
+
+    skills_input = request.GET.get('skills','').strip()
+    if skills_input:
+        skills_list = [skill.strip() for skill in skills_input.split(',') if skill.strip()]
+        for skill in skills_list:
+            jobs = jobs.filter(skills__icontains=skill)
+
     template_data = {}
     template_data['title'] = 'Job Listings'
     template_data['jobs'] = jobs

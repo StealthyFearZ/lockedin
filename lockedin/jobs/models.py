@@ -5,9 +5,10 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Job(models.Model):
     id = models.AutoField(primary_key=True)
+    created_at = models.DateTimeField(auto_now_add="true")
     title = models.CharField(help_text="What is the job title?", max_length = 255)
-    start_date = models.DateTimeField(auto_now_add=True)
-    end_date = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField(blank="true", null="true")
     description = models.TextField()
     recruiter = models.ForeignKey(User, on_delete=models.CASCADE)
     skills = models.CharField(help_text="List all of your skills(E.g: Project Management, Agile Methodologies, etc.)", max_length = 255)
@@ -20,5 +21,6 @@ class Job(models.Model):
     def __str__(self):
         return str(self.recruiter) + " - " + str(self.title)
 
-
+    def get_skills_list(self):
+        return [skill.strip() for skill in self.skills.split(',') if skill.strip()]
 
