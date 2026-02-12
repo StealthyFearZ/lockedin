@@ -58,14 +58,14 @@ def add_experience(request):
             work_exp.save()
             messages.success(request, 'Added Experience!')
             return redirect('profiles.detail', username=request.user.username)
-        else:
+    else:
             form = ExperienceForm()
 
-        context = {
-            'form' : form,
-            'title' : 'Add Experience',
-            'template_data' : {'title', 'Add Experience'}
-        }
+    context = {
+        'form' : form,
+        'title' : 'Add Experience',
+        'template_data' : {'title', 'Add Experience'}
+    }
     return render(request, 'profiles/experience_form.html', context)
 
 @login_required
