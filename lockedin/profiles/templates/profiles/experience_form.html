@@ -110,6 +110,11 @@
                         </div>
 
                         <!-- Errors -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
 
                         <!-- Buttons (Save / Cancel)-->
 
