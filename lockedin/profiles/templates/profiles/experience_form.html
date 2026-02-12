@@ -117,7 +117,15 @@
                         {% endif %}
 
                         <!-- Buttons (Save / Cancel)-->
-
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'profiles.detail' username=user.username %}" 
+                               class="btn btn-secondary">
+                                <i class="fa-solid fa-xmark"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
