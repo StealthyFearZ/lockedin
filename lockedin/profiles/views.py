@@ -72,7 +72,7 @@ def add_experience(request):
 def edit_experience(request, exp_id):
     # Edit old Experience
     # Get Associated Experience
-    work_exp = get_object_or_404(Experience, exp_id=exp_id, profile__user=request.user)
+    work_exp = get_object_or_404(Experience, pk=exp_id, profile__user=request.user)
 
     if request.method == 'POST':
         form = ExperienceForm(request.POST, instance=work_exp)
@@ -81,7 +81,7 @@ def edit_experience(request, exp_id):
             messages.success(request, "Experience Updated!")
             return redirect('profiles.detail', username=request.user.username)
     else:
-        form = Experience(instance=work_exp)
+        form = ExperienceForm(instance=work_exp)
 
     context = {
         'form' : form,
@@ -96,7 +96,7 @@ def edit_experience(request, exp_id):
 def delete_experience(request, exp_id):
     # Delete old Experience
     # Get Associated Experience
-    work_exp = get_object_or_404(Experience, exp_id=exp_id, profile__user=request.user)
+    work_exp = get_object_or_404(Experience, pk=exp_id, profile__user=request.user)
 
     if request.method == 'POST':
         work_exp.delete()
