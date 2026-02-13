@@ -13,6 +13,20 @@
         <h4>Welcome to the best Employment Center!!</h4>
       </div>
     </div>
+    {% if user.is_authenticated %}
+      <h2>Your Feed</h2>
+      <hr/>
+      {% for job in template_data.jobs %}
+      <div class="col-md-4 col-lg-3 mb-2">
+        <div class="card">
+          <div class="card-header text-center">
+            <h5>{{job.title}}</h5>
+            <p>{{job.location}} | {{job.classification}} | {{job.location}}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
   </div>
 </div>
 {% endblock content %}

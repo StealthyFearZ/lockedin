@@ -24,3 +24,30 @@ class Job(models.Model):
     def get_skills_list(self):
         return [skill.strip() for skill in self.skills.split(',') if skill.strip()]
 
+# intermediary model
+class Application(models.Model):
+    # type enum (hardcoded application type)
+    class ApplicationChoices(models.TextChoices):
+        APPLIED = "AP", "Applied"
+        REVIEW = "RE", "Review"
+        INTERVIEW = "IN", "Interview"
+        OFFER = "OF", "Offer"
+        CLOSED = "CL", "Closed"
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    choices = models.TextChoices('Applied', 'Review', 'Interview', 'Offer', 'Closed')
+    status = models.CharField(
+        max_length = 2,
+        choices=ApplicationChoices,
+        default=ApplicationChoices.APPLIED)
+    
+    # restricting so only one application per job per user
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'job'],
+                name="single_application_per_user",
+                violation_error_message="User has already applied to this job."
+            )
+        ]
