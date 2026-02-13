@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
-    search_term = request.GET.get('search')
+    search_term = request.GET.get('search').strip()
     if search_term:
-        jobs = (Job.objects.filter(title__icontains=search_term) | Job.objects.filter(skills__icontains=search_term)).distinct() #distinct needed to ensure that jobs can be found by name OR skills rather than only if both of them overlap
+        jobs = (Job.objects.filter(title__icontains=search_term) | Job.objects.filter(skills__icontains=search_term) | Job.objects.filter(recruiter__username__icontains=search_term)).distinct() #distinct needed to ensure that jobs can be found by name OR skills OR recruiter rather than only if both of them overlap
     else:
         jobs = Job.objects.all()
 
@@ -15,7 +15,7 @@ def index(request):
         jobs = jobs.filter(location__icontains=location)
 
     classification = request.GET.get('classification','').strip()
-    if location:
+    if classification: # Slight error here, was using location, fixed it to classification
         jobs = jobs.filter(classification__icontains=classification)
 
     min_salary = request.GET.get('min_salary','').strip()
