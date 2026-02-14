@@ -17,7 +17,6 @@ class Profile(models.Model):
     # Times
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
-
     # Functions
     def __str__(self):
         return f"{self.user.username}'s Profile"
