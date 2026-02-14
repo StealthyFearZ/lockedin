@@ -5,7 +5,8 @@ from django.contrib import messages
 from .models import Profile, Experience
 from .forms import ProfileForm, ExperienceForm
 
-# Create your views here.
+# Profile Views
+
 @login_required
 def profile_view(request, username=None):
     # You have to be logged in to view a profile
@@ -43,6 +44,8 @@ def profile_edit(request):
         'template_data' : {'title' : 'Edit Profile'}
     }
     return render(request, 'profiles/profile_form.html', context)
+
+# Experience Views
 
 @login_required
 def add_experience(request):
@@ -108,3 +111,29 @@ def delete_experience(request, exp_id):
         'template_data' : {'title' : 'Delete Experience'}
     }
     return render(request, 'profiles/experience_delete.html', context)
+
+# Education Views
+
+@login_required
+def add_education(request):
+    # Add new Education
+    # Get Associated Profile
+    profile = get_object_or_404(Profile, user=request.user)
+
+    if request.method == 'POST':
+        form = ExperienceForm(request.POST)
+        if form.is_valid():
+            edu_exp = form.save(commit=False)
+            edu_exp.profile = profile
+            edu_exp.save()
+            messages.success(request, 'Added Education!')
+            return redirect('profiles.detail', username=request.user.username)
+    else:
+            form = ExperienceForm()
+
+    context = {
+        'form' : form,
+        'title' : 'Add Education',
+        'template_data' : {'title', 'Add Education'}
+    }
+    return render(request, 'profiles/education_form.html', context)
