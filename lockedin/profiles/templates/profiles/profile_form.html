@@ -46,6 +46,17 @@
                             {{ form.about }}
                         </div>
 
+                        <!-- ADD Private Option-->
+                        <div class="mb-3 form-check">
+                            {{ form.is_private}}
+                            <label class="form-check-label" for="{{ form.is_private.id_for_label }}">
+                                Set Privacy Setting
+                            </label>
+                            {% if form.is_private.errors %}
+                                <div class="text-danger small mt-1">{{ form.is_private.errors }}</div>
+                            {% endif %}
+                        </div>
+                    
                         <!-- ADD SKILLS-->
                         <div class="mb-3">
                             <label for="{{ form.skills.id_for_label }}" class="form-label">
