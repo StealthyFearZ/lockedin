@@ -39,6 +39,19 @@
                         </p>
                     {% endif %}
                     <!-- Add first 3 skills-->
+                    {% if profile.skills %}
+                        <div class="mb-3">
+                            <small class="text-muted"> Skills: </small>
+                            <div class="d-flex gap flex-wrap mt-1">
+                                {% for skill in profile.get_skills_list|slice:":3" %}
+                                    <span class="badge bg-secondary">{{ skill }}</span>
+                                {% endfor %}
+                                {% if profile.get_skills_list|length > 3 %}
+                                    <span class="badge bg-light text-dark">+ {{ profile.get_skills_list|length|add:"-3" }}  more</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
 
                     <!-- Add Option to view their profile in profile_detail.html -->
                 </div>
