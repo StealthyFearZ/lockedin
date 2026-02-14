@@ -40,6 +40,7 @@
                     {% endif %}
                     <!-- Add first 3 skills-->
                     {% if profile.skills %}
+                        {% if not profile.is_private %}
                         <div class="mb-3">
                             <small class="text-muted"> Skills: </small>
                             <div class="d-flex gap flex-wrap mt-1">
@@ -51,6 +52,7 @@
                                 {% endif %}
                             </div>
                         </div>
+                        {% endif %}
                     {% endif %}
 
                     <!-- Add Option to view their profile in profile_detail.html -->
