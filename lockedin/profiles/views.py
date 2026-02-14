@@ -155,8 +155,25 @@ def edit_education(request, exp_id):
 
     context = {
         'form' : form,
-        'work_exp' : edu_exp,
+        'edu_exp' : edu_exp,
         'title' : 'Edit Education',
         'template_data' : {'title': 'Edit Education'}
     }
     return render(request, 'profiles/education_form.html', context)
+
+@login_required
+def delete_education(request, exp_id):
+    # Delete old Education
+    # Get Associated Education
+    edu_exp = get_object_or_404(Experience, pk=exp_id, profile__user=request.user)
+
+    if request.method == 'POST':
+        edu_exp.delete()
+        messages.success(request, 'Education Deleted!')
+        return redirect('profiles.detail', username=request.user.username)
+    
+    context = {
+        'edu_exp' : edu_exp,
+        'template_data' : {'title' : 'Delete Education'}
+    }
+    return render(request, 'profiles/education_delete.html', context)
