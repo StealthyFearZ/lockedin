@@ -51,13 +51,22 @@ class Experience(models.Model):
 
 class Education(models.Model):
     # Education Info
+    # List of degrees you can select from
+    degrees = [
+        ('high_school', 'High School'),
+        ('associate', 'Associate Degree'),
+        ('bachelor', 'Bachelor\'s Degree'),
+        ('master', 'Master\'s Degree'),
+        ('phd', 'Ph.D.'),
+    ]
+
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='educations')
     start_date = models.DateField()
     end_date = models.DateField(blank = True, null = True)
     school_name = models.CharField(max_length=150)
     location = models.CharField(max_length=150)
     current_school = models.BooleanField(default=False)
-    degree = models.CharField(max_length=50, blank=True)
+    degree = models.CharField(max_length=50, choices=degrees)
     field_of_study = models.CharField(max_length=200, blank=True)
     # Times
     time_created = models.DateTimeField(auto_now_add=True)
