@@ -5,6 +5,7 @@ urlpatterns = [
     # Profile URLs
     path('edit/', views.profile_edit, name='profiles.edit'),
     path('', views.profile_view, name='profiles.my_profile'),
+    path('browse/', views.profile_list, name='profiles.list'),
 
     # Experience URLs
     path('work-experience/add/', views.add_experience, name='profiles.add_experience'),
