@@ -54,6 +54,12 @@
                     {% endif %}
 
                     <!-- Add Option to view their profile in profile_detail.html -->
+                    <div class="text-center mt-3">
+                        <a href="{% url 'profiles.detail' username=profile.user.username %}" 
+                           class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye"></i> View Profile
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
