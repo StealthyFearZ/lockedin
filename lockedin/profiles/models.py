@@ -56,6 +56,7 @@ class Education(models.Model):
     end_date = models.DateField(blank = True, null = True)
     school_name = models.CharField(max_length=150)
     location = models.CharField(max_length=150)
+    current_school = models.BooleanField(default=False)
     # Times
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
