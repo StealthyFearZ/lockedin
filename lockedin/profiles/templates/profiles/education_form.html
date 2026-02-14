@@ -62,7 +62,13 @@
                             </div>
                             <!-- Field of Study -->
                             <div class="col-md-6 mb-3">
-
+                                <label for="{{ form.field_of_study.id_for_label }}" class="form-label">
+                                    {{ form.field_of_study.label }}
+                                </label>
+                                {{ form.field_of_study }}
+                                {% if form.field_of_study.errors %}
+                                    <div class="text-danger small mt-1">{{ form.field_of_study.errors }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         
