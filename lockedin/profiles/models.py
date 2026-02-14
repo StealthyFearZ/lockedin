@@ -57,8 +57,8 @@ class Education(models.Model):
     school_name = models.CharField(max_length=150)
     location = models.CharField(max_length=150)
     current_school = models.BooleanField(default=False)
-    degree = models.CharField(max_length=50)
-    field_of_study = models.CharField(max_length=200)
+    degree = models.CharField(max_length=50, blank=True)
+    field_of_study = models.CharField(max_length=200, blank=True)
     # Times
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
