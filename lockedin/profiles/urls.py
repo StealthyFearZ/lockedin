@@ -11,5 +11,10 @@ urlpatterns = [
     path('work-experience/<int:exp_id>/edit/', views.edit_experience, name='profiles.edit_experience'),
     path('work-experience/<int:exp_id>/delete/', views.delete_experience, name='profiles.delete_experience'),
 
+    # Education URLs
+    path('education/add/', views.add_education, name='profiles.add_education'),
+    path('education/<int:exp_id>/edit/', views.edit_education, name='profiles.edit_education'),
+    path('education/<int:exp_id>/delete/', views.delete_education, name='profiles.delete_education'),
+
     path('<str:username>/', views.profile_view, name='profiles.detail'),
 ]
