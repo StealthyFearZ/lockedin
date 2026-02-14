@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Profile, Experience
-from .forms import ProfileForm, ExperienceForm
+from .models import Profile, Experience, Education
+from .forms import ProfileForm, ExperienceForm, EducationForm
 
 # Profile Views
 
@@ -121,7 +121,7 @@ def add_education(request):
     profile = get_object_or_404(Profile, user=request.user)
 
     if request.method == 'POST':
-        form = ExperienceForm(request.POST)
+        form = EducationForm(request.POST)
         if form.is_valid():
             edu_exp = form.save(commit=False)
             edu_exp.profile = profile
@@ -129,7 +129,7 @@ def add_education(request):
             messages.success(request, 'Added Education!')
             return redirect('profiles.detail', username=request.user.username)
     else:
-            form = ExperienceForm()
+            form = EducationForm()
 
     context = {
         'form' : form,
@@ -142,16 +142,16 @@ def add_education(request):
 def edit_education(request, exp_id):
     # Edit old Education
     # Get Associated Education
-    edu_exp = get_object_or_404(Experience, pk=exp_id, profile__user=request.user)
+    edu_exp = get_object_or_404(Education, pk=exp_id, profile__user=request.user)
 
     if request.method == 'POST':
-        form = ExperienceForm(request.POST, instance=edu_exp)
+        form = EducationForm(request.POST, instance=edu_exp)
         if form.is_valid():
             form.save()
             messages.success(request, "Education Updated!")
             return redirect('profiles.detail', username=request.user.username)
     else:
-        form = ExperienceForm(instance=edu_exp)
+        form = EducationForm(instance=edu_exp)
 
     context = {
         'form' : form,
@@ -165,7 +165,7 @@ def edit_education(request, exp_id):
 def delete_education(request, exp_id):
     # Delete old Education
     # Get Associated Education
-    edu_exp = get_object_or_404(Experience, pk=exp_id, profile__user=request.user)
+    edu_exp = get_object_or_404(Education, pk=exp_id, profile__user=request.user)
 
     if request.method == 'POST':
         edu_exp.delete()
