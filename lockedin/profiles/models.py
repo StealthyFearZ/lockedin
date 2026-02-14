@@ -49,5 +49,20 @@ class Experience(models.Model):
     class Meta:
         ordering = ['-start_date']
 
+class Education(models.Model):
+    # Education Info
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='educations')
+    start_date = models.DateField()
+    end_date = models.DateField(blank = True, null = True)
+    school_name = models.CharField(max_length=150)
+    location = models.CharField(max_length=150)
+    # Times
+    time_created = models.DateTimeField(auto_now_add=True)
+    time_updated = models.DateTimeField(auto_now=True)
 
+    #Functions
+    def __str__(self):
+        return f"{self.profile.user.username} @ {self.school_name}"
     
+    class Meta:
+        ordering = ['-start_date']
