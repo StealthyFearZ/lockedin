@@ -53,6 +53,7 @@
         </button>
         <div class="navbar-nav ms-auto navbar-ml">
             <a class="nav-link" href="{% url 'home.about' %}">About</a>
+            <a class="nav-link" href="{% url 'profiles.list' %}">Browse</a>
             
             {% if user.is_authenticated %}
                 <a class="nav-link" href="{% url 'profiles.my_profile' %}">My Profile</a>
