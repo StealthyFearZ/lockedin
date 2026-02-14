@@ -137,3 +137,26 @@ def add_education(request):
         'template_data' : {'title', 'Add Education'}
     }
     return render(request, 'profiles/education_form.html', context)
+
+@login_required
+def edit_education(request, exp_id):
+    # Edit old Education
+    # Get Associated Education
+    edu_exp = get_object_or_404(Experience, pk=exp_id, profile__user=request.user)
+
+    if request.method == 'POST':
+        form = ExperienceForm(request.POST, instance=edu_exp)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Education Updated!")
+            return redirect('profiles.detail', username=request.user.username)
+    else:
+        form = ExperienceForm(instance=edu_exp)
+
+    context = {
+        'form' : form,
+        'work_exp' : edu_exp,
+        'title' : 'Edit Education',
+        'template_data' : {'title': 'Edit Education'}
+    }
+    return render(request, 'profiles/education_form.html', context)
