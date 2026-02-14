@@ -45,6 +45,17 @@ def profile_edit(request):
     }
     return render(request, 'profiles/profile_form.html', context)
 
+@login_required
+def profile_list(request):
+    # View all the profiles, sort currently by time of creation
+    profiles = Profile.objects.select_related('user').all().order_by('-created_at')
+    
+    context = {
+        'profiles': profiles,
+        'template_data': {'title': 'Browse Profiles'}
+    }
+    return render(request, 'profiles/profile_list.html', context)
+
 # Experience Views
 
 @login_required
