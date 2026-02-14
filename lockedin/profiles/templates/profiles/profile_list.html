@@ -12,6 +12,7 @@
 
     <div class="row">
         {% for profile in profiles %}
+        <!-- Individual Profile Box -->
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
@@ -28,8 +29,17 @@
                     </div>
 
                     <!-- Add Name / Username-->
+                    <h5 class="card-title text-center">
+                        {{ profile.user.get_full_name|default:profile.user.username }}
+                    </h5>
                     <!-- Add Headline -->
+                    {% if profile.headline}
+                        <p class="text-muted text-center mb-3">
+                            <small>{{ profile.headline|truncatewords:15 }}</small>
+                        </p>
+                    {% endif %}
                     <!-- Add first 3 skills-->
+
                     <!-- Add Option to view their profile in profile_detail.html -->
                 </div>
             </div>
