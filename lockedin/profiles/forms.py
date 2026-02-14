@@ -7,7 +7,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['headline', 'about', 'skills', 'profile_pic', 
-                  'linkedin_url', 'github_url', 'portfolio_url']
+                  'linkedin_url', 'github_url', 'portfolio_url', 'is_private']
         widgets = {
             'headline': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -38,6 +38,9 @@ class ProfileForm(forms.ModelForm):
             'portfolio_url': forms.URLInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'https://yourportfolio.com'
+            }),
+            'is_private' : forms.CheckboxInput(attrs={
+                'class' : 'form-check-input'
             }),
         }
         labels = {
