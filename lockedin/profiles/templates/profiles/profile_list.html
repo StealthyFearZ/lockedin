@@ -33,7 +33,7 @@
                         {{ profile.user.get_full_name|default:profile.user.username }}
                     </h5>
                     <!-- Add Headline -->
-                    {% if profile.headline}
+                    {% if profile.headline %}
                         <p class="text-muted text-center mb-3">
                             <small>{{ profile.headline|truncatewords:15 }}</small>
                         </p>
