@@ -116,16 +116,24 @@ class EducationForm(forms.ModelForm):
 
     class Meta:
         model = Education
-        fields = ['school_name', 'location', 'start_date',
+        fields = ['school_name', 'degree', 'field_of_study',
+                 'location', 'start_date',
                  'end_date', 'current_school']
         widgets = {
             'school_name' : forms.TextInput(attrs={
                 'class' : 'form-control',
                 'placeholder' : 'Ex: Georgia Institute of Technology'
             }),
+            'degree': forms.Select(attrs={
+                'class': 'form-select'
+            }),
+            'field_of_study': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ex: Computer Engineering'
+            }),
             'location' : forms.TextInput(attrs={
                 'class' : 'form-control',
-                'placeholder' : 'Ex: Santa Clara, CA'
+                'placeholder' : 'Ex: Atlanta, GA'
             }),
             'start_date' : forms.DateInput(attrs={
                 'class' : 'form-control',
