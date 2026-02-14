@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, Experience
+from .models import Profile, Experience, Education
 
 class ProfileForm(forms.ModelForm):
     # Creates and Updates Profiles
@@ -97,6 +97,58 @@ class ExperienceForm(forms.ModelForm):
 
         # If working a current job, then there should be no end date
         if current_job:
+            cleaned_data['end_date'] = None
+        elif not end_date:
+            raise forms.ValidationError(
+                'Must provide an end date, or check "Currently Working Here'
+            )
+        
+        # Start Date must be before End Date
+        if end_date and start_date and start_date > end_date:
+            raise forms.ValidationError(
+                "Start Date must be before End Date"
+            )
+        
+        return cleaned_data
+    
+class EducationForm(forms.ModelForm):
+    # CRUD for Educations
+
+    class Meta:
+        model = Education
+        fields = ['school_name', 'location', 'start_date',
+                 'end_date', 'current_school']
+        widgets = {
+            'school_name' : forms.TextInput(attrs={
+                'class' : 'form-control',
+                'placeholder' : 'Ex: Georgia Institute of Technology'
+            }),
+            'location' : forms.TextInput(attrs={
+                'class' : 'form-control',
+                'placeholder' : 'Ex: Santa Clara, CA'
+            }),
+            'start_date' : forms.DateInput(attrs={
+                'class' : 'form-control',
+                'type' : 'date'
+            }),
+            'end_date' : forms.DateInput(attrs={
+                'class' : 'form-control',
+                'type' : 'date'
+            }),
+            'current_school' : forms.CheckboxInput(attrs={
+                'class' : 'form-check-input'
+            })
+        }
+    
+    # Add Method to clean Education
+    def clean(self):
+        cleaned_data = super().clean()
+        current_school = cleaned_data.get('current_school')
+        start_date  = cleaned_data.get('start_date')
+        end_date    = cleaned_data.get('end_date')
+
+        # If working a current job, then there should be no end date
+        if current_school:
             cleaned_data['end_date'] = None
         elif not end_date:
             raise forms.ValidationError(
