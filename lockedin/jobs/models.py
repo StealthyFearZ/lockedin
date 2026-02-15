@@ -36,7 +36,7 @@ class Application(models.Model):
     
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
-    choices = models.TextChoices('Applied', 'Review', 'Interview', 'Offer', 'Closed')
+    #choices = models.TextChoices('Applied', 'Review', 'Interview', 'Offer', 'Closed')
     status = models.CharField(
         max_length = 2,
         choices=ApplicationChoices,
