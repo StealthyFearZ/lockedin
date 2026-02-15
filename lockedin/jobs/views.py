@@ -74,3 +74,8 @@ def edit(request, id):
 @login_required
 def post(request):
     return None
+
+def map(request):
+    template_data = {}
+    template_data['title'] = 'Map'
+    return render(request, 'jobs/map.html', {'template_data': template_data})

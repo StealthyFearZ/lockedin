@@ -54,6 +54,7 @@
         <div class="navbar-nav ms-auto navbar-ml">
             <a class="nav-link" href="{% url 'home.about' %}">About</a>
             <a class="nav-link" href="{% url 'jobs.index' %}">Jobs</a>
+            <a class="nav-link" href="{% url 'jobs.map' %}">Map</a> 
             {% if user.is_authenticated %}
                 <a class="nav-link" href="{% url 'profiles.my_profile' %}">My Profile</a>
                 <a class="nav-link" href="{% url 'accounts.logout' %}"> Logout ({{ user.username }})
