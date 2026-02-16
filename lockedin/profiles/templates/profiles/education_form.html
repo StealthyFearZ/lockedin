@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-graduation-cap"></i> {{ title }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- Form Messages-->
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <!-- School Name  -->
+                        <div class="mb-3">
+                            <label for="{{ form.school_name.id_for_label }}" class="form-label">
+                                <!-- REQUIRED info-->
+                                {{ form.school_name.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.school_name }}
+                            {% if form.school_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.school_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Location -->
+                        <div class="mb-3">
+                            <label for="{{ form.location.id_for_label }}" class="form-label">
+                                {{ form.location.label }}
+                            </label>
+                            {{ form.location }}
+                            {% if form.location.errors %}
+                                <div class="text-danger small mt-1">{{ form.location.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Degree and field of study -->
+                        <div class="row">
+                            <!-- Degree -->
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.degree.id_for_label }}" class="form-label">
+                                    {{ form.degree.label }}
+                                </label>
+                                {{ form.degree }}
+                                {% if form.degree.errors %}
+                                    <div class="text-danger small mt-1">{{ form.degree.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <!-- Field of Study -->
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.field_of_study.id_for_label }}" class="form-label">
+                                    {{ form.field_of_study.label }}
+                                </label>
+                                {{ form.field_of_study }}
+                                {% if form.field_of_study.errors %}
+                                    <div class="text-danger small mt-1">{{ form.field_of_study.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Dates -->
+                        <div class="row">
+                            <!-- ADD START DATE DIV HERE -->
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.start_date.id_for_label }}" class="form-label">
+                                    <!-- Show that it's required-->
+                                    {{ form.start_date.label }} <span class="text-danger">*</span>
+                                </label>
+                                {{ form.start_date }}
+                                {% if form.start_date.errors %}
+                                    <div class="text-danger small mt-1">{{ form.start_date.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <!-- ADD END DATE DIV HERE -->
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.end_date.id_for_label }}" class="form-label">
+                                    {{ form.end_date.label }}
+                                </label>
+                                {{ form.end_date }}
+                                {% if form.end_date.errors %}
+                                    <div class="text-danger small mt-1">{{ form.end_date.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Current School -->
+                        <div class="mb-3 form-check">
+                            {{ form.current_school}}
+                            <label class="form-check-label" for="{{ form.current_school.id_for_label }}">
+                                Currently Attending Here
+                            </label>
+                            {% if form.current_school.errors %}
+                                <div class="text-danger small mt-1">{{ form.current_school.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Errors -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <!-- Buttons (Save / Cancel)-->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'profiles.detail' username=user.username %}" 
+                               class="btn btn-secondary">
+                                <i class="fa-solid fa-xmark"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

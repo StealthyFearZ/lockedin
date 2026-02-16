@@ -83,9 +83,134 @@
     </div>
     {% endif %}
 
-    <!-- Education Section -->
-
     <!-- Work Experience Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-briefcase"></i> Work Experience </h5>
+            {% if is_own_profile %}
+                <a href="{% url 'profiles.add_experience' %}" class="btn btn-sm btn-light">
+                    <i class="fas fa-plus"></i> Add Experience
+                </a>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            {% if profile.experiences.all %}
+                {% for work_exp in profile.experiences.all %}
+                <!-- <h5>WORK EXPERIENCES WORK</h5> -->
+                <div class="mb-4 {% if not forloop.last %} border-bottom pb-3{% endif %}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <!-- Add Job Title -->
+                            <h5 class="mb-1"> {{ work_exp.job }} </h5>
+                            <!-- Add Company Name -->
+                            <h6 class="text-muted mb1"> {{ work_exp.company }} </h6>
+                            <!-- Add Location -->
+                            {% if work_exp.location %}
+                                <p class="text-muted small mb-1">
+                                    <i class="fas fa-map-marker-alt"></i> {{ work_exp.location }}
+                                </p>
+                            {% endif %}
+                            <!-- Add Dates -->
+                             <p class="text-muted small mb-2">
+                                <i class="far fa-calendar"></i>
+                                {{ work_exp.start_date|date:"M Y" }} -
+                                {% if work_exp.current_job %}
+                                    <span class="badge bg-primary">Present</span>
+                                {% else %}
+                                    {{ work_exp.end_date|date:"M Y" }}
+                                {% endif %}
+                             </p>
+                            <!-- Add Description -->
+                             <p style="white-space: pre-line;">
+                                {{ work_exp.description }}
+                             </p>
+                        </div>
+                        <!-- Add Edit / Delete Option if it's your own Profile -->
+                        {% if is_own_profile %}
+                            <div class="btn-group">
+                                <!-- Add Link for Edit -->
+                                <a href="{% url 'profiles.edit_experience' work_exp.pk %}"
+                                    class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <!-- Add Link for Delete -->
+                                
+                                <a href="{% url 'profiles.delete_experience' work_exp.pk %}"
+                                    class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No Work Experience</p>
+            {% endif %}
+        </div>
+    </div>
 
+    <!-- Education Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-graduation-cap"></i> Education </h5>
+            {% if is_own_profile %}
+                <a href="{% url 'profiles.add_education' %}" class="btn btn-sm btn-light">
+                    <i class="fas fa-plus"></i> Add Education
+                </a>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            {% if profile.educations.all %}
+                {% for edu_exp in profile.educations.all %}
+                <!-- <h5>EDUCATIONS LISTEDD HERE</h5> -->
+                <div class="mb-4 {% if not forloop.last %} border-bottom pb-3{% endif %}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <!-- Add School Name -->
+                            <h5 class="mb-1"> {{ edu_exp.school_name }} </h5>
+                            <!-- Add Degree -->
+                            <h6 class="text-muted mb1"> {{ edu_exp.get_degree_display }} - {{ edu_exp.field_of_study }} </h6>
+                            <!-- Add Location -->
+                            {% if edu_exp.location %}
+                                <p class="text-muted small mb-1">
+                                    <i class="fas fa-map-marker-alt"></i> {{ edu_exp.location }}
+                                </p>
+                            {% endif %}
+                            <!-- Add Dates -->
+                             <p class="text-muted small mb-2">
+                                <i class="far fa-calendar"></i>
+                                {{ edu_exp.start_date|date:"M Y" }} -
+                                {% if edu_exp.current_school %}
+                                    <span class="badge bg-primary">Present</span>
+                                {% else %}
+                                    {{ edu_exp.end_date|date:"M Y" }}
+                                {% endif %}
+                             </p>
+                        </div>
+                        <!-- Add Edit / Delete Option if it's your own Profile -->
+                        {% if is_own_profile %}
+                            <div class="btn-group">
+                                <!-- Add Link for Edit -->
+                                <a href="{% url 'profiles.edit_education' edu_exp.pk %}"
+                                    class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <!-- Add Link for Delete -->
+                                
+                                <a href="{% url 'profiles.delete_education' edu_exp.pk %}"
+                                    class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No Education</p>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock content %}
