@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Job
+from .models import Job, Application
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -59,7 +59,6 @@ def listing(request, id):
     template_data['description'] = job.description
     template_data['company'] = job.recruiter
     template_data['skills'] = job.skills
-    template_data['skills'] = job.skills   
     template_data['salary_top'] = job.salary_upper
     template_data['salary_bottom'] = job.salary_lower
     template_data['location'] = job.location
@@ -74,3 +73,25 @@ def edit(request, id):
 @login_required
 def post(request):
     return None
+
+@login_required
+def applications(request):
+    applications = Application.objects.filter(user=request.user)
+
+    status = request.GET.get('status','').strip()
+    if len(status) > 0:
+        applications = applications.filter(status=status)
+
+    template_data = {}
+    template_data["apps"] = applications
+    template_data["status_choices"] = Application.ApplicationChoices.choices
+    return render(request, 'jobs/applications.html',
+                  {'template_data': template_data})
+
+@login_required
+def edit_application_status(request, appId, targetStatus):
+    # Ensure the user owns the application before editing
+    app = get_object_or_404(Application, id=appId, user=request.user)
+    app.status = targetStatus
+    app.save()
+    return redirect('jobs.applications')

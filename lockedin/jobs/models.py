@@ -11,7 +11,7 @@ class Job(models.Model):
     end_date = models.DateTimeField(blank="true", null="true")
     description = models.TextField()
     recruiter = models.ForeignKey(User, on_delete=models.CASCADE)
-    skills = models.CharField(help_text="List all of your skills(E.g: Project Management, Agile Methodologies, etc.)", max_length = 255)
+    skills = models.TextField(help_text="List all of your skills(E.g: Project Management, Agile Methodologies, etc.)")
     salary_upper = models.IntegerField()
     salary_lower = models.IntegerField()
     location = models.CharField(help_text="Where is this job listing located? Where do employees work from?", max_length = 255)
@@ -36,6 +36,7 @@ class Application(models.Model):
     
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add="true")
     choices = models.TextChoices('Applied', 'Review', 'Interview', 'Offer', 'Closed')
     status = models.CharField(
         max_length = 2,
