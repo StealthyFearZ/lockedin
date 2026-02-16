@@ -11,9 +11,8 @@ def index(request):
     profile = None
     if request.user.is_authenticated:
         profile = Profile.objects.all().filter(user=request.user).first()
-
-    template_data['profile'] = profile
-    template_data['skills'] = profile.get_skills_list
+        template_data['profile'] = profile
+        template_data['skills'] = profile.get_skills_list
 
     return render(request, 'home/index.html', {
         'template_data': template_data})
