@@ -1,0 +1,80 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="p-3">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col mx-auto mb-3">
+        <h2>List of Jobs</h2>
+        <hr />
+        <p class="card-text">
+          <form method="GET">
+            <div class="row">
+              <div class="col-auto">
+                <div class="input-group col-auto">
+                  <div class="input-group-text">Search</div>
+                  <input type="text" class="form-control" name="search">
+                </div>
+              </div>
+              <div class="col-auto">
+                <div class="dropdown">
+                    <button class="btn btn-dark-outline dropdown-toggle" data-bs-toggle="dropdown" type="button">Filter</button>
+                    <div class="dropdown-menu p-3" style="min-width: 350px;">
+                        <!--Status Filter-->
+                        <div class="mb-2">
+                            <label class="form-label mb-1">Status</label>
+                            <select class="form-select mb-1" name="status">
+                                <option value="">[Please Select]</option>
+                                <option value="AP" {%if request.GET.status == "AP"%}selected{%endif%}>Applied</option>
+                                <option value="RE" {%if request.GET.status == "RE"%}selected{%endif%}>Review</option>
+                                <option value="IN" {%if request.GET.status == "IN"%}selected{%endif%}>Interview</option>
+                                <option value="OF" {%if request.GET.status == "OF"%}selected{%endif%}>Offer</option>
+                                <option value="CL" {%if request.GET.status == "CL"%}selected{%endif%}>Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-auto">
+                <button class="btn bg-dark text-white" type="submit">Search</button>
+              </div>
+            </div>
+          </form>  
+        </p>     
+        
+     </div>
+   
+      </div>
+    </div>
+    <div class="col">
+      {% for app in template_data.apps %}
+      <div class="col-12 mb-3">
+        <div class="card w-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-1">{{app.job.title}} - {{app.date}}</h5>
+                <div class="dropdown mb-2">
+                  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Status: {{ app.get_status_display }}
+                  </button>
+                  <ul class="dropdown-menu">
+                    {% for code, label in template_data.status_choices %}
+                      <li><a class="dropdown-item" href="{% url 'jobs.change_status' appId=app.id targetStatus=code %}">{{ label }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <p>
+                    {{app.job.location}} | {{app.job.classification}} | {{app.job.start_date}} - {{app.job.end_date}}
+                </p>
+            </div>
+            <a href="{% url 'jobs.listing' id=app.job.id %}"
+              class="btn bg-dark text-white">
+              View Posting
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock content %}
