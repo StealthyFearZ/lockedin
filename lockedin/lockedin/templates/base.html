@@ -60,6 +60,10 @@
               <small>Browse</small>
             </a>
             {% if user.is_authenticated %}
+                <a class="nav-link text-center" href="{% url 'jobs.map' %}">
+                  <i class="fa-solid fa-map d-block"></i>
+                  <small>Map</small>
+                </a>
                 <a class="nav-link text-center" href="{% url 'jobs.index' %}">
                   <i class="fa-solid fa-briefcase d-block"></i>
                   <small>Jobs</small>
