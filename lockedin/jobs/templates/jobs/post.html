@@ -1,0 +1,81 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="p-3 mt-4"> <!--template from login.html-->
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow p-3 mb-4 rounded">
+          <div class="card-body">
+            <h2 class="mb-1">{{ template_data.title }}</h2>
+            <hr/>
+
+            <form method="POST">
+              {% csrf_token %}
+
+              {{ template_data.form.non_field_errors }}
+
+              <div class="mb-3">
+                <label class="form-label">Title</label>
+                {{ template_data.form.title }}
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Start Date</label>
+                  {{ template_data.form.start_date }}
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">End Date</label>
+                  {{ template_data.form.end_date }}
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Location</label>
+                {{ template_data.form.location }}
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Work Type</label>
+                {{ template_data.form.classification }}
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                {{ template_data.form.description }}
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Skills (comma separated)</label>
+                {{ template_data.form.skills }}
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Salary Lower</label>
+                  {{ template_data.form.salary_lower }}
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Salary Upper</label>
+                  {{ template_data.form.salary_upper }}
+                </div>
+              </div>
+
+              <div class="mb-3 form-check">
+                {{ template_data.form.isSponsoring }}
+                <label class="form-check-label">Visa Sponsoring</label>
+              </div>
+
+              <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn bg-dark text-white">Post</button>
+                <a href="{% url 'jobs.index' %}" class="btn btn-danger">Cancel</a>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

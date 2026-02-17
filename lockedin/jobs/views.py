@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Job, Application
 from django.contrib.auth.decorators import login_required
+from .forms import JobForm
 
 # Create your views here.
 def index(request):
@@ -60,11 +61,28 @@ def listing(request, id):
 
 @login_required
 def edit(request, id):
-    return None
+    job = get_object_or_404(Job, pk=id)
+    if job.recruiter != request.user: # only recruiter should be able to edit
+        return redirect("jobs.listing", id=job.id)
+
+    if request.method == "POST":
+        form = JobForm(request.POST, instance=job)
+        if form.is_valid():
+            form.save()
+            return redirect("jobs.listing", id=job.id)
+    else:
+        form = JobForm(instance=job)
+
+    template_data = {}
+    template_data["title"] = "Edit Job"
+    template_data["form"] = form
+    template_data["job"] = job
+    return render(request, "jobs/edit.html", {"template_data": template_data})
 
 @login_required
 def post(request):
-    return None
+    template_data = {}
+    return render(request, 'jobs/post.html', {'template_data' : template_data})
 
 @login_required
 def apply(request, id):
