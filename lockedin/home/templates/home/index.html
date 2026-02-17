@@ -55,10 +55,10 @@
         
         {% endif %}  
         {% endfor %}
-      </div>    
+         
 
       <!--Jobs that DON'T match skills in feed-->
-      <div class="row mt-3">
+
         {% for job in template_data.jobs %}
         {% commonSkill template_data.skills job.get_skills_list as has_common %}
         {% if not has_common %}
@@ -67,8 +67,8 @@
           <div class="card h-100 shadow-sm">
 
             <div class="card-header text-center">
-              <div class="alert alert-success" role="alert">
-                    Matches your skills!
+              <div class="alert alert-secondary" role="alert">
+                    No shared skills
               </div>      
               <h5>{{job.title}}</h5>
               <p>{{job.description}}</p>
