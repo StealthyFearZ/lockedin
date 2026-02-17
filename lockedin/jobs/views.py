@@ -67,6 +67,23 @@ def post(request):
     return None
 
 @login_required
+def apply(request, id):
+    job = get_object_or_404(Job, id=id)
+
+    # cannot apply to same job more than once
+    if Application.objects.filter(user=request.user, job=job).exists():
+        return redirect('jobs.listing', id=id)
+    
+    if request.method == 'POST':
+        if not Application.objects.filter(user=request.user, job=job).exists():
+            note = request.POST.get('note', '')
+            Application.objects.create(user=request.user, job=job, note=note)
+        return redirect('jobs.applications')
+    template_data = {}
+    template_data["job"] = job
+    return render(request, 'jobs/apply.html', {'template_data' : template_data})
+
+@login_required
 def applications(request):
     applications = Application.objects.filter(user=request.user)
 

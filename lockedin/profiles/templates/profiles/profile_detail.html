@@ -19,8 +19,11 @@
                             <i class="fas fa-user fa-4x text-white"></i>
                         </div>
                     {% endif %}
+                    <!-- Add Role HERE -->
+                    <p> </p> <!-- Added spacer between profile pic and role -->
+                    <p class="text-muted mb-2"><strong>{{ profile.get_role_display }}</strong></p>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8"> 
                     <!-- Should be name or username-->
                     <h2>{{ profile.user.get_full_name|default:profile.user.username }}</h2>
                     {% if profile.headline %}

@@ -47,6 +47,7 @@ class Application(models.Model):
         max_length = 2,
         choices=ApplicationChoices,
         default=ApplicationChoices.APPLIED)
+    note = models.CharField(blank=True, max_length = 150)
     
     # restricting so only one application per job per user
     class Meta:
