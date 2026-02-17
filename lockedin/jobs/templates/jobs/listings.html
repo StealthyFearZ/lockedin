@@ -43,7 +43,54 @@
         </div>
       </div>
 
+    <div class="col-lg-4">
+      <div class="card shadow p-3 mb-3 rounded">
+        <div class="card-body">
+          <h5 class="mb-3">Details</h5>
+          <div class="mb-2">
+            <div class="text-muted small">Location</div>
+            <div>{{ template_data.job.location }}</div>
+          </div>
+          <div class="mb-2">
+            <div class="text-muted small">Work Type</div>
+            <div>{{ template_data.job.classification }}</div>
+          </div>
+          <div class="mb-2">
+            <div class="text-muted small">Dates</div>
+            <div>
+              {{ template_data.job.start_date }}
+              {% if template_data.job.end_date %} <!--Some jobs do not have an end date-->
+                - {{ template_data.job.end_date }}
+              {% endif %}
+            </div>
+          </div>
+          <div class="mb-2">
+            <div class="text-muted small">Salary Range</div>
+            <div>
+              ${{ template_data.job.salary_lower }} – ${{ template_data.job.salary_upper }}
+            </div>
+          </div>
 
+          <div class="mb-2">
+            <div class="text-muted small">Sponsorship</div>
+              <div>
+                {% if template_data.job.isSponsoring %}
+                  Sponsoring visas / OPT or CPT allowed
+                {% else %}
+                  US work authorization required / Not sponsoring
+                {% endif %}
+              </div>
+          </div>
+          <hr class="my-3"/>
+
+          <div class="text-muted small">
+            Posted on {{ template_data.job.created_at }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p>Interested? Contact the recruiter and find out more! {{template_data.job.recruiter.email}}</p>
   </div>
 </div>
 
