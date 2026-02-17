@@ -69,14 +69,24 @@
     submitBtn.addEventListener('click', function(event) {
         event.preventDefault();                                         // Prevent page from refreshing
         const distanceInput = document.getElementById('max_distance');  // Get form input element
-        miles = Number(distanceInput.value);                              // Store input value
-        renderMarkers();
+        miles = Number(distanceInput.value);                            // Store input value
+        renderMarkers();                                                // Redraw map markers
     });
 
+    // Intial render
     renderMarkers();
 
-    // Iterate over javascript job list and add a marker for each coordinate pair
+    // Displays markers within specified filter distance
     function renderMarkers() {
+        console.log('renderMarkers called, miles =', miles);
+        // Remove all existing markers
+        map.eachLayer(layer => {
+            if (layer instanceof L.Marker) {
+                map.removeLayer(layer);
+            }
+        });
+
+        // Redraw markers
         jobs.forEach(j => {
                 x = j.fields.location_x
                 y = j.fields.location_y
