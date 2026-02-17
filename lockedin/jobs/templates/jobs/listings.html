@@ -20,6 +20,30 @@
       </div>
     </div>
     <hr/>
+
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="card shadow p-3 mb-3 rounded"> <!--Cards for job description should be in a column so as to make space for other cards on the left-->
+          <div class="card-body">
+            <h5 class="mb-2">Job Description</h5>
+            <p>
+              {{ template_data.job.description }}
+            </p>
+            <hr class="my-4"/>
+
+            <h6 class="mb-2">Skills Needed:</h6> <!--Format from profiles and index.html-->
+            <div class="d-flex flex-wrap gap-2">
+              {% for s in template_data.job.get_skills_list %}
+                <span class="badge bg-secondary">{{ s }}</span>
+              {% empty %} <!--In case the job has no skills required-->
+                <span class="text-muted">No skills listed</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+
   </div>
 </div>
 
