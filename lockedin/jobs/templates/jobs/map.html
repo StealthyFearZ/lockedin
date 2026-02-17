@@ -15,7 +15,31 @@
         height: 500px;
         width: 100%;
     }
+    .dropdown {
+        display: flex;
+        justify-content: flex-end;
+    }
 </style>
+
+<div class="col-auto">
+    <div class="dropdown">
+        <button class="btn btn-dark-outline dropdown-toggle" data-bs-toggle="dropdown" type="button">Filter</button>
+        <div class="dropdown-menu p-3" style="min-width: 350px;">
+            <!--Distance Filter-->
+            <div class="mb-2" id="filterDropdown">
+                <label class="form-label mb-1">Maximum Distance (mi)</label>
+                <div class="row">
+                <div class="col">
+                    <input type="number" class="form-control" id="max_distance" name="max_distance" 
+                    placeholder="Maximum Distance" value={{request.GET.min_salary}}>
+                </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <button class="btn bg-dark text-white" id="submit" type="submit">Search</button>
+            </div>
+        </div>   
+    </div>
 
 <div id="map"></div>
 
@@ -36,13 +60,34 @@
     // Generate javascript object using JSON job list
     const jobs = JSON.parse('{{ jobs_json|escapejs }}');
 
-    // Iterate over javascript job list and add a marker for each coordinate pair
-    jobs.forEach(j => {
-        marker = L.marker([j.fields.location_x, j.fields.location_y]).addTo(map)
-        marker.bindPopup(`<b>${j.fields.title}</b><br>${j.fields.location}`)
+    // Default distance filter
+    let miles = 1000000;
+
+    // Capture input value from distance filtering form
+    const filterDropdown = document.getElementById('filterDropdown');
+    const submitBtn = document.getElementById('submit');
+    submitBtn.addEventListener('click', function(event) {
+        event.preventDefault();                                         // Prevent page from refreshing
+        const distanceInput = document.getElementById('max_distance');  // Get form input element
+        miles = Number(distanceInput.value);                              // Store input value
+        renderMarkers();
     });
 
+    renderMarkers();
 
+    // Iterate over javascript job list and add a marker for each coordinate pair
+    function renderMarkers() {
+        jobs.forEach(j => {
+                x = j.fields.location_x
+                y = j.fields.location_y
+                // Filter by leaflet's Latlng distanceTo function and only add markers within specified distance
+                // Currently uses Georgia Tech as reference location
+                if(L.latLng([x, y]).distanceTo([33.776174, -84.398815]) < (miles * 1609.34)) {
+                    marker = L.marker([x, y]).addTo(map)
+                    marker.bindPopup(`<b>${j.fields.title}</b><br>${j.fields.location}`)
+                }
+            });
+    }
 </script>
 
 {% endblock content %}
