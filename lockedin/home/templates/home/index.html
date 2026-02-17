@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load utils %}
 {% block content %}
 <header class="masthead bg-index text-white text-center py-4">
   <div class="container d-flex align-items-center flex-column pt-2">
@@ -13,6 +14,69 @@
         <h4>Welcome to the best Employment Center!!</h4>
       </div>
     </div>
+    {% if user.is_authenticated %}
+      <h2>Your Feed</h2>
+      <hr/>
+
+      <!--Jobs that match skills in feed-->
+      <div class="row">
+        {% for job in template_data.jobs %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          {% commonSkill template_data.skills job.get_skills_list as has_common %}
+          {% if has_common %}
+            <div class="card">
+              <div class="card-header text-center">
+                    <div class="alert alert-success" role="alert">
+                      Matches your skills!
+                    </div>
+                <h5>{{job.title}}</h5>
+                <p>{{job.description}}</p>
+                <p>{{job.classification}} | {{job.location}}</p>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for skill in job.get_skills_list %}
+                      {% if skill in template_data.skills %}
+                          <span class="badge bg-success px-3 py-2">{{ skill }}</span>
+                      {% endif %}
+                    {% endfor %}
+                    {% for skill in job.get_skills_list %}
+                      {% if not skill in template_data.skills %}
+                          <span class="badge bg-secondary px-3 py-2">{{ skill }}</span>
+                      {% endif %}
+                    {% endfor %}                
+                </div>
+              </div>
+            </div>
+          </div>  
+          {% endif %}  
+        </div>  
+        {% endfor %}
+      </div>    
+
+      <!--Jobs that DON'T match skills in feed-->
+      <div class="row mt-4">
+        {% for job in template_data.jobs %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          {% commonSkill template_data.skills job.get_skills_list as has_common %}
+          {% if not has_common %}
+            <div class="card">
+              <div class="card-header text-center">
+                    <div class="alert alert-secondary" role="alert">
+                      No shared skills
+                    </div>
+                <h5>{{job.title}}</h5>
+                <p>{{job.location}} | {{job.classification}} | {{job.location}}</p>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for skill in job.get_skills_list %}
+                      <span class="badge bg-secondary px-3 py-2">{{ skill }}</span>
+                    {% endfor %}                
+                </div>
+              </div>
+            </div>
+          {% endif %}  
+        </div>
+        {% endfor %}
+      </div>        
+    {% endif %}
   </div>
 </div>
 {% endblock content %}

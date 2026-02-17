@@ -28,11 +28,37 @@
                         <div class="mb-2">
                             <label class="form-label mb-1">Work Type</label>
                             <select class="form-select mb-1" name="classification">
-                                <option>[Please Select]</option>
-                                <option>On-Site</option>
-                                <option>Hybrid</option>
-                                <option>Remote</option>
+                                <option value="">[Please Select]</option>
+                                <option value="On-Site" {%if request.GET.classification == "On-Site"%}selected{%endif%}>On-Site</option>
+                                <option value="Hybrid" {%if request.GET.classification == "Hybrid"%}selected{%endif%}>Hybrid</option>
+                                <option value="Remote" {%if request.GET.classification == "Remote"%}selected{%endif%}>Remote</option>
                             </select>
+                        </div>
+                        <!--Salary Range Filter-->
+                        <div class="mb-2">
+                          <label class="form-label mb-1">Salary Range</label>
+                          <div class="row">
+                            <div class="col">
+                              <input type="number" class="form-control" name="min_salary" placeholder="Minimum Salary" value={{request.GET.min_salary}}>
+                            </div>
+                            <div class="col">
+                              <input type="number" class="form-control" name="max_salary" placeholder="Maximum Salary" value={{request.GET.max_salary}}>
+                            </div>
+                          </div>
+                        </div>
+                        <!--Sponsorship Filter-->
+                        <div class="mb-2">
+                            <label class="form-label mb-1">Visa Sponsoring</label>
+                            <select class="form-select mb-1" name="sponsorship">
+                                <option value="">[Please Select]</option>
+                                <option value="Sponsoring" {%if request.GET.sponsorship == "Sponsoring"%}selected{%endif%}>Sponsoring visas/OPT or CPT applicants allowed</option>
+                                <option value="Not Sponsoring" {%if request.GET.sponsorship == "Not Sponsoring"%}selected{%endif%}>US Work Authorization Required/Not Sponsoring</option>
+                            </select>
+                        </div>
+                        <!--Skills Filter-->
+                        <div class="mb-2">
+                            <label class="form-label mb-1">Skills</label>
+                            <input type="text" class="form-control" name="skills" placeholder="Git, SQL, Node.js, etc."/>
                         </div>
                     </div>
                 </div>
@@ -56,12 +82,20 @@
             <div>
                 <h5 class="mb-1">{{job.title}} by {{job.recruiter}}</h5>
                 <p>
-                    {{job.location}} | {{job.classification}} | {{job.location}} | {% if job.isSponsoring == True %}Sponsoring{% else %} Not Sponsoring {% endif %}
+                    {{job.location}} | {{job.classification}} | {{job.start_date}} - {{job.end_date}} | {% if job.isSponsoring == True %}Sponsoring{% else %} Not Sponsoring {% endif %}
                 </p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+              {% for s in job.get_skills_list %}
+                <span class="badge bg-secondary">{{ s }}</span>
+              {% endfor %}
             </div>
             <a href="{% url 'jobs.listing' id=job.id %}"
               class="btn bg-dark text-white">
               View
+            </a>
+            <a href="{% url 'jobs.apply' id=job.id %}" class="btn bg-dark text-white">
+              Apply
             </a>
           </div>
         </div>
