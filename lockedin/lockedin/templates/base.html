@@ -113,6 +113,30 @@
               href="{% url 'home.about' %}">
               About
             </a></p>
+            <p><a class="nav-link"
+              href="{% url 'profiles.list' %}">
+              Browse
+            </a></p>
+            {% if user.is_authenticated %}
+            <p><a class="nav-link"
+              href="{% url 'home.about' %}">
+              Jobs
+            </a></p>
+            <p><a class="nav-link"
+              href="{% url 'profiles.my_profile' %}">
+              Profile
+            </a></p>
+            {% else %}
+            <p><a class="nav-link"
+              href="{% url 'accounts.login' %}">
+              Login
+            </a></p>
+            <p><a class="nav-link"
+              href="{% url 'accounts.signup' %}">
+              Sign Up
+            </a></p>
+            {% endif %}
+    
           </div>
           <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
             <b>CONTACT</b>
