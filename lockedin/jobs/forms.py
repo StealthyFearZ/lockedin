@@ -5,7 +5,7 @@ class JobForm(forms.ModelForm):
     class Meta:
         model = Job
         fields = ['title','start_date', 'end_date', 'description', 'skills', 
-                  'salary_upper', 'salary_lower', 'location', 'classification', 'isSponsoring']
+                  'salary_upper', 'salary_lower', 'location', 'location_x', 'location_y', 'classification', 'isSponsoring']
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -41,6 +41,14 @@ class JobForm(forms.ModelForm):
                 'class' : 'form-control',
                 'placeholder' : 'e.g. New York, Atlanta'
             }),
+            'location_x' : forms.NumberInput(attrs={
+                'class' : 'form-control',
+                'placeholder' : 'X-Coordinates'
+            }),
+            'location_y' : forms.NumberInput(attrs={
+                'class' : 'form-control',
+                'placeholder' : 'Y-Coordinates'
+            }),
             'classification' : forms.Select(attrs={
                 'class' : 'form-select'
             }),
@@ -57,6 +65,8 @@ class JobForm(forms.ModelForm):
             'salary_upper' : 'Max. Salary', 
             'salary_lower' : 'Min. Salary', 
             'location' : 'Location', 
+            'location_x' : 'Location X-Coords',
+            'location_y' : 'Location Y-Coords',
             'classification' : 'Job Classfication', 
             'isSponsoring' : 'Visa Sponsoring'
         }

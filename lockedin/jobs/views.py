@@ -137,6 +137,7 @@ def edit_application_status(request, appId, targetStatus):
     app.status = targetStatus
     app.save()
     return redirect('jobs.applications')
+
 def map(request):
     jobs = Job.objects.all()
     template_data = {}
