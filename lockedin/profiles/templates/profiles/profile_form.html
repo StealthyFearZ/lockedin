@@ -29,6 +29,15 @@
                             {% endif %}
                         </div>
 
+                        <!-- ADD Role HERE -->
+                        <div class="mb-3">
+                            <!-- Make sure that it is Required-->
+                            <label for="{{ form.role.id_for_label }}" class="form-label">
+                                {{ form.role.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.role }}
+                        </div>
+
                         <!-- ADD HEADLINE-->
                         <div class="mb-3">
                             <!-- Make sure that it is Required-->
