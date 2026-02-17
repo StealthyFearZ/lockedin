@@ -51,19 +51,11 @@ def index(request):
                   {'template_data': template_data})
 
 def listing(request, id):
-    job = Job.objects.get(id=id)
+    job = get_object_or_404(Job, pk=id)
     template_data = {}
     template_data['title'] = job.title
-    template_data['start_date'] = job.start_date
-    template_data['end_date'] = job.end_date
-    template_data['description'] = job.description
+    template_data['job'] = job
     template_data['company'] = job.recruiter
-    template_data['skills'] = job.skills
-    template_data['salary_top'] = job.salary_upper
-    template_data['salary_bottom'] = job.salary_lower
-    template_data['location'] = job.location
-    template_data['classification'] = job.classification
-    template_data['sponsoring'] = job.isSponsoring
     return render(request, 'jobs/listings.html', {'template_data' : template_data})
 
 @login_required

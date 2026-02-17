@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Job(models.Model):
+    classificationChoices = [
+        ("On-Site", "on-site"),
+        ("Hybrid", "hybrid"),
+        ("Remote", "remote"),
+    ]
     id = models.AutoField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add="true")
     title = models.CharField(help_text="What is the job title?", max_length = 255)
@@ -15,7 +20,7 @@ class Job(models.Model):
     salary_upper = models.IntegerField()
     salary_lower = models.IntegerField()
     location = models.CharField(help_text="Where is this job listing located? Where do employees work from?", max_length = 255)
-    classification = models.CharField(help_text="E.g: On-Site, Hybrid, Remote", max_length = 255)
+    classification = models.CharField(choices=classificationChoices, max_length=20)
     isSponsoring = models.BooleanField(help_text="True: for OPT/CPT, F-1, J-1, etc., False: US citizens/Green Card holders")
 
     def __str__(self):

@@ -1,8 +1,26 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 {% block content %}
-<div class="d-flex justify-content-between align-items-center">
-    <h1>{{template_data.title}}</h2>
-    <h3 class="text-muted bg-light">{{template_data.company.username}}</h3>
+
+<div class="p-3 mt-4">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+      <div>
+        <h2 class="mb-1">{{ template_data.job.title }}</h2>
+        <div class="text-muted">
+          Posted by <strong>{{ template_data.job.recruiter.username }}</strong>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="{% url 'jobs.index'%}" class="btn btn-outline-dark">Back</a>
+        {% if user.is_authenticated and user == template_data.job.recruiter %}
+          <a href="{% url 'jobs.edit' id=template_data.job.id %}" class="btn bg-dark text-white">Edit</a>
+        {% endif %}
+      </div>
+    </div>
+    <hr/>
+  </div>
 </div>
-<hr/>
+
 {% endblock content %}
