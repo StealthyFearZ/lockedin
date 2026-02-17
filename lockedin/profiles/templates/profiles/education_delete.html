@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Confirm Delete</h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-6">
+                        Do you want to delete this Education?
+                    </p>
+                    <div class="alert">
+                        <!-- Add School Name, Degree, and Field of Study -->
+                        <strong>{{ edu_exp.school_name }}</strong>
+                        <br>{{ edu_exp.get_degree_display }} - {{ edu_exp.field_of_study }}<br>
+                        <!-- Add Date Range -->
+                        <small class="text-muted">
+                            {{ edu_exp.start_date|date:"M Y" }} - 
+                            {% if edu_exp.current_school %}
+                            Present
+                            {% else %}
+                            {{ edu_exp.end_date|date:"M Y"}}
+                            {% endif %}
+                        </small>
+                    </div>
+
+                    <p class="text-danger"><strong> This cannot be undone </strong></p>
+
+                    <!-- Add Buttons to Cancel / Delete -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-between">
+                            <!-- Add the buttons here ... :) -->
+                            <a href="{% url 'profiles.detail' username=user.username %}"
+                                class="btn btn-secondary"> <i class="fa-solid fa-xmark"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

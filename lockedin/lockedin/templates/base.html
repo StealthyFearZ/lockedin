@@ -52,15 +52,32 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-nav ms-auto navbar-ml">
-            <a class="nav-link" href="{% url 'home.about' %}">About</a>
-            <a class="nav-link" href="{% url 'jobs.index' %}">Jobs</a>
+            <a class="nav-link text-center" href="{% url 'home.about' %}">
+              <i class="fa-solid fa-circle-info d-block"></i>
+              <small>About</small></a>
+            <a class="nav-link text-center" href="{% url 'profiles.list' %}">
+              <i class="fas fa-users d-block"></i>
+              <small>Browse</small>
+            </a>
+            
             {% if user.is_authenticated %}
-                <a class="nav-link" href="{% url 'profiles.my_profile' %}">My Profile</a>
-                <a class="nav-link" href="{% url 'accounts.logout' %}"> Logout ({{ user.username }})
+                <a class="nav-link text-center" href="{% url 'profiles.my_profile' %}">
+                  <i class="fas fa-user-circle d-block"></i>
+                  <small>Profile</small>
+                </a>
+                <a class="nav-link text-center" href="{% url 'accounts.logout' %}"> 
+                  <i class="fa-solid fa-right-from-bracket d-block"></i>
+                  <small>Logout ({{ user.username }})</small>
                 </a>
             {% else %}
-                <a class="nav-link" href="{% url 'accounts.login' %}">Login</a>
-                <a class="nav-link" href="{% url 'accounts.signup' %}">Sign Up</a>
+                <a class="nav-link text-center" href="{% url 'accounts.login' %}">
+                  <i class="fa-solid fa-right-to-bracket d-block"></i>
+                  <small>Login</small>
+                </a>
+                <a class="nav-link text-center" href="{% url 'accounts.signup' %}">
+                  <i class="fa-solid fa-user-plus d-block"></i> 
+                  <small>Sign Up</small>
+                </a>
             {% endif %}
         </div>
       </div>
