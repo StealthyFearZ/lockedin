@@ -3,12 +3,13 @@ from .models import Job, Application
 from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
 from django.http import JsonResponse
+from .forms import JobForm
 
 # Create your views here.
 def index(request):
     search_term = request.GET.get('search')
     if search_term:
-        jobs = (Job.objects.filter(title__icontains=search_term) | Job.objects.filter(skills__icontains=search_term)).distinct() #distinct needed to ensure that jobs can be found by name OR skills rather than only if both of them overlap
+        jobs = (Job.objects.filter(title__icontains=search_term.strip()) | Job.objects.filter(skills__icontains=search_term.strip()) | Job.objects.filter(recruiter__username__icontains=search_term.strip())).distinct() #distinct needed to ensure that jobs can be found by name OR skills OR recruiter rather than only if both of them overlap
     else:
         jobs = Job.objects.all()
 
@@ -17,7 +18,7 @@ def index(request):
         jobs = jobs.filter(location__icontains=location)
 
     classification = request.GET.get('classification','').strip()
-    if location:
+    if classification: # Slight error here, was using location, fixed it to classification
         jobs = jobs.filter(classification__icontains=classification)
 
     min_salary = request.GET.get('min_salary','').strip()
@@ -53,28 +54,50 @@ def index(request):
                   {'template_data': template_data})
 
 def listing(request, id):
-    job = Job.objects.get(id=id)
+    job = get_object_or_404(Job, pk=id)
     template_data = {}
     template_data['title'] = job.title
-    template_data['start_date'] = job.start_date
-    template_data['end_date'] = job.end_date
-    template_data['description'] = job.description
+    template_data['job'] = job
     template_data['company'] = job.recruiter
-    template_data['skills'] = job.skills
-    template_data['salary_top'] = job.salary_upper
-    template_data['salary_bottom'] = job.salary_lower
-    template_data['location'] = job.location
-    template_data['classification'] = job.classification
-    template_data['sponsoring'] = job.isSponsoring
     return render(request, 'jobs/listings.html', {'template_data' : template_data})
 
 @login_required
 def edit(request, id):
-    return None
+    job = get_object_or_404(Job, pk=id)
+    if job.recruiter != request.user: # only recruiter should be able to edit
+        return redirect("jobs.listing", id=job.id)
+
+    if request.method == "POST":
+        form = JobForm(request.POST, instance=job)
+        if form.is_valid():
+            form.save()
+            return redirect("jobs.listing", id=job.id)
+    else:
+        form = JobForm(instance=job)
+
+    template_data = {}
+    template_data["title"] = "Edit Job"
+    template_data["form"] = form
+    template_data["job"] = job
+    return render(request, "jobs/edit.html", {"template_data": template_data})
 
 @login_required
 def post(request):
-    return None
+    if request.user.profile.role != "recruiter": #check for correct role for posting
+        return redirect("jobs.index")
+    if request.method == "POST":
+        form = JobForm(request.POST)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.recruiter = request.user # explicitly set the recruiter of this new job 
+            job.save()
+            return redirect("jobs.listing", id=job.id)
+    else:
+        form = JobForm()
+    template_data = {}
+    template_data['title'] = "Post Job"
+    template_data['form'] = form
+    return render(request, "jobs/post.html", {"template_data": template_data})
 
 @login_required
 def apply(request, id):

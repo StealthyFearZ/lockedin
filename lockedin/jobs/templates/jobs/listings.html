@@ -1,4 +1,97 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 {% block content %}
+
+<div class="p-3 mt-4">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+      <div>
+        <h2 class="mb-1">{{ template_data.job.title }}</h2>
+        <div class="text-muted">
+          Posted by <strong>{{ template_data.job.recruiter.username }}</strong>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="{% url 'jobs.index'%}" class="btn btn-outline-dark">Back</a>
+        {% if user.is_authenticated and user == template_data.job.recruiter %}
+          <a href="{% url 'jobs.edit' id=template_data.job.id %}" class="btn bg-dark text-white">Edit</a>
+        {% endif %}
+      </div>
+    </div>
+    <hr/>
+
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="card shadow p-3 mb-3 rounded"> <!--Cards for job description should be in a column so as to make space for other cards on the left-->
+          <div class="card-body">
+            <h5 class="mb-2">Job Description</h5>
+            <p>
+              {{ template_data.job.description }}
+            </p>
+            <hr class="my-4"/>
+
+            <h6 class="mb-2">Skills Needed:</h6> <!--Format from profiles and index.html-->
+            <div class="d-flex flex-wrap gap-2">
+              {% for s in template_data.job.get_skills_list %}
+                <span class="badge bg-secondary">{{ s }}</span>
+              {% empty %} <!--In case the job has no skills required-->
+                <span class="text-muted">No skills listed</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="col-lg-4">
+      <div class="card shadow p-3 mb-3 rounded">
+        <div class="card-body">
+          <h5 class="mb-3">Details</h5>
+          <div class="mb-2">
+            <div class="text-muted small">Location</div>
+            <div>{{ template_data.job.location }}</div>
+          </div>
+          <div class="mb-2">
+            <div class="text-muted small">Work Type</div>
+            <div>{{ template_data.job.classification }}</div>
+          </div>
+          <div class="mb-2">
+            <div class="text-muted small">Dates</div>
+            <div>
+              {{ template_data.job.start_date }}
+              {% if template_data.job.end_date %} <!--Some jobs do not have an end date-->
+                - {{ template_data.job.end_date }}
+              {% endif %}
+            </div>
+          </div>
+          <div class="mb-2">
+            <div class="text-muted small">Salary Range</div>
+            <div>
+              ${{ template_data.job.salary_lower }} – ${{ template_data.job.salary_upper }}
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <div class="text-muted small">Sponsorship</div>
+              <div>
+                {% if template_data.job.isSponsoring %}
+                  Sponsoring visas / OPT or CPT allowed
+                {% else %}
+                  US work authorization required / Not sponsoring
+                {% endif %}
+              </div>
+          </div>
+          <hr class="my-3"/>
+
+          <div class="text-muted small">
+            Posted on {{ template_data.job.created_at }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p>Interested? Contact the recruiter and find out more! {{template_data.job.recruiter.email}}</p>
+  </div>
+</div>
 
 {% endblock content %}
