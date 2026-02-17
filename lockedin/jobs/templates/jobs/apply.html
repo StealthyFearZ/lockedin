@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Confirm Application</div>
+                <div class="card-body">
+                    <h5 class="card-title">Applying for {{ template_data.job.title }}</h5>
+                    <p class="card-text">Customize your application with a tailored note.</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="note" class="form-label">Note (Optional)</label>
+                            <input type="text" class="form-control" id="note" name="note" maxlength="150">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Application</button>
+                        <a href="{% url 'jobs.listing' id=template_data.job.id %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
