@@ -27,9 +27,11 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+    /*
     // Test marker
     var marker = L.marker([33.774841, -84.396407]).addTo(map); // Location of CS2340 classroom
     marker.bindPopup("<b>CS2340 Developer</b><br>260 4th Street NW<br>Atlanta, GA 30332")
+    */
 
     // Generate javascript object using JSON job list
     const jobs = JSON.parse('{{ jobs_json|escapejs }}');
