@@ -6,9 +6,12 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['headline', 'about', 'skills', 'profile_pic', 
+        fields = ['role','headline', 'about', 'skills', 'profile_pic', 
                   'linkedin_url', 'github_url', 'portfolio_url', 'is_private']
         widgets = {
+            'role': forms.Select(attrs={
+                'class': 'form-select'
+            }),
             'headline': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'example: Student at Georgia Tech'
