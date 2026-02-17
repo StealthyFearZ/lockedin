@@ -81,8 +81,21 @@ def edit(request, id):
 
 @login_required
 def post(request):
+    if request.user.profile.role != "recruiter": #check for correct role for posting
+        return redirect("jobs.index")
+    if request.method == "POST":
+        form = JobForm(request.POST)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.recruiter = request.user # explicitly set the recruiter of this new job 
+            job.save()
+            return redirect("jobs.listing", id=job.id)
+    else:
+        form = JobForm()
     template_data = {}
-    return render(request, 'jobs/post.html', {'template_data' : template_data})
+    template_data['title'] = "Post Job"
+    template_data['form'] = form
+    return render(request, "jobs/post.html", {"template_data": template_data})
 
 @login_required
 def apply(request, id):
