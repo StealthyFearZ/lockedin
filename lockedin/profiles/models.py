@@ -5,6 +5,11 @@ from django.core.validators import URLValidator
 # Create your models here.
 class Profile(models.Model):
     # Model Information
+    roles = [
+        ('recruiter', 'Recruiter'),
+        ('employee', 'Employee'),
+    ]
+    role         = models.CharField(max_length=50, choices=roles, default='employee')
     headline     = models.CharField(max_length = 150, help_text="Example: CS @ GT")
     user         = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     about        = models.TextField(blank=True, help_text="Tells us about yourself")
