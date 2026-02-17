@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Job, Application
 from django.contrib.auth.decorators import login_required
+from django.core.serializers import serialize
+from django.http import JsonResponse
 
 # Create your views here.
 def index(request):
@@ -112,3 +114,10 @@ def edit_application_status(request, appId, targetStatus):
     app.status = targetStatus
     app.save()
     return redirect('jobs.applications')
+def map(request):
+    jobs = Job.objects.all()
+    template_data = {}
+    template_data['title'] = 'Job Map'
+    template_data['jobs'] = jobs
+    return render(request, 'jobs/map.html', {"jobs_json": serialize("json", jobs), 
+                                             'template_data': template_data})

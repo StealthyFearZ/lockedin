@@ -8,4 +8,5 @@ urlpatterns = [
     path('<int:id>/post/', views.post, name="jobs.post"),
     path('applications/', views.applications, name="jobs.applications"),
     path('applications/<int:appId>/status/<str:targetStatus>/', views.edit_application_status, name="jobs.change_status"),
+    path('map', views.map, name="jobs.map"),
 ]
