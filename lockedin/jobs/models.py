@@ -15,8 +15,8 @@ class Job(models.Model):
     salary_upper = models.IntegerField()
     salary_lower = models.IntegerField()
     location = models.CharField(help_text="Where is this job listing located? Where do employees work from?", max_length = 255)
-    location_x = models.IntegerField(help_text="X-Coordinate of office location")
-    location_y = models.IntegerField(help_text="Y-Coordinate of office location")
+    location_x = models.FloatField(help_text="X-Coordinate of office location")
+    location_y = models.FloatField(help_text="Y-Coordinate of office location")
     classification = models.CharField(help_text="E.g: On-Site, Hybrid, Remote", max_length = 255)
     isSponsoring = models.BooleanField(help_text="True: for OPT/CPT, F-1, J-1, etc., False: US citizens/Green Card holders")
 
