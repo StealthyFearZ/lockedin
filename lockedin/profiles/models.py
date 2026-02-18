@@ -14,7 +14,7 @@ class Profile(models.Model):
     user         = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     about        = models.TextField(blank=True, help_text="Tells us about yourself")
     skills       = models.TextField(help_text="Add your skills")
-    profile_pic  = models.ImageField(null=True, upload_to='profile_pictures/', blank=True)
+    profile_pic  = models.ImageField(null=True, upload_to='img/', blank=True)
     is_private   = models.BooleanField(default=False)
     # URL Links
     github_url   = models.URLField(blank=True, validators=[URLValidator()])
