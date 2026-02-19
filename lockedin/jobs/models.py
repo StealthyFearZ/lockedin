@@ -22,7 +22,6 @@ class Job(models.Model):
     location = models.CharField(help_text="Where is this job listing located? Where do employees work from?", max_length = 255)
     location_x = models.FloatField(help_text="X-Coordinate of office location")
     location_y = models.FloatField(help_text="Y-Coordinate of office location")
-    classification = models.CharField(help_text="E.g: On-Site, Hybrid, Remote", max_length = 255)
     classification = models.CharField(choices=classificationChoices, max_length=20)
     isSponsoring = models.BooleanField(help_text="True: for OPT/CPT, F-1, J-1, etc., False: US citizens/Green Card holders")
 
