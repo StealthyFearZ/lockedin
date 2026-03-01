@@ -48,7 +48,7 @@ class Application(models.Model):
     #choices = models.TextChoices('Applied', 'Review', 'Interview', 'Offer', 'Closed')
     status = models.CharField(
         max_length = 2,
-        choices=ApplicationChoices,
+        choices=ApplicationChoices.choices,
         default=ApplicationChoices.APPLIED)
     note = models.CharField(blank=True, max_length = 150)
     
