@@ -159,3 +159,27 @@ def recruiter_dashboard(request):
     }
     return render(request, 'jobs/recruiter_dashboard.html', context)
 
+@login_required
+def application_pipeline(request, job_id):
+    #get job
+    job = get_object_or_404(Job, id=job_id, recruiter=request.user)
+    
+    # find applications
+    applications = Application.objects.filter(job=job).select_related('user', 'user__profile')
+    
+    # order applications into status of application for kanban board
+    pipeline = {
+        'applied': applications.filter(status=Application.ApplicationChoices.APPLIED),
+        'review': applications.filter(status=Application.ApplicationChoices.REVIEW),
+        'interview': applications.filter(status=Application.ApplicationChoices.INTERVIEW),
+        'offer': applications.filter(status=Application.ApplicationChoices.OFFER),
+        'closed': applications.filter(status=Application.ApplicationChoices.CLOSED),
+    }
+    
+    context = {
+        'job': job,
+        'pipeline': pipeline,
+        'template_data': {'title': f'Applications - {job.title}'}
+    }
+    return render(request, 'jobs/application_pipeline.html', context)
+
