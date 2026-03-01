@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
 from django.http import JsonResponse
 from .forms import JobForm
+from profiles.models import Profile
 
 # Create your views here.
 def index(request):
@@ -145,3 +146,16 @@ def map(request):
     template_data['jobs'] = jobs
     return render(request, 'jobs/map.html', {"jobs_json": serialize("json", jobs), 
                                              'template_data': template_data})
+
+# Kanban Stuff
+@login_required
+def recruiter_dashboard(request):
+    # Only show jobs posted by the current user (recruiter)
+    jobs = Job.objects.filter(recruiter=request.user).order_by('-date_posted')
+    
+    context = {
+        'jobs': jobs,
+        'template_data': {'title': 'Recruiter Dashboard'}
+    }
+    return render(request, 'jobs/recruiter_dashboard.html', context)
+
