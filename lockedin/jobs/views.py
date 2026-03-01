@@ -149,6 +149,7 @@ def map(request):
                                              'template_data': template_data})
 
 # Kanban Stuff
+
 @login_required
 def recruiter_dashboard(request):
     # Only show jobs posted by the current user (recruiter)
@@ -208,3 +209,17 @@ def update_application_status(request, application_id):
     
     return redirect('jobs.application_pipeline', job_id=application.job.id)
 
+@login_required
+def update_application_note(request, application_id):
+    # add note to applicant
+    if request.method == 'POST':
+        application = get_object_or_404(Application, id=application_id, job__recruiter=request.user)
+        note = request.POST.get('note', '')
+        application.note = note[:150] # Can only be 150 chars
+        application.save()
+        messages.success(request, 'Note updated successfully')
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'success': True})
+    
+    return redirect('jobs.application_pipeline', job_id=application.job.id)
