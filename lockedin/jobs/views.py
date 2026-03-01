@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Job, Application
 from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
+from django.contrib import messages
 from django.http import JsonResponse
 from .forms import JobForm
 from profiles.models import Profile
@@ -182,4 +183,28 @@ def application_pipeline(request, job_id):
         'template_data': {'title': f'Applications - {job.title}'}
     }
     return render(request, 'jobs/application_pipeline.html', context)
+
+@login_required
+def update_application_status(request, application_id):
+    # Get application
+    if request.method == 'POST':
+        application = get_object_or_404(Application, id=application_id, job__recruiter=request.user)
+        new_status = request.POST.get('status')
+        
+        # Validate new status
+        valid_statuses = [choice[0] for choice in Application.ApplicationChoices.choices]
+        if new_status in valid_statuses:
+            application.status = new_status
+            application.save()
+            messages.success(request, f'Application status updated to {application.get_status_display()}')
+            
+            # If AJAX request, return JSON
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'success': True, 'status': application.get_status_display()})
+        else:
+            messages.error(request, 'Invalid status')
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'success': False, 'error': 'Invalid status'})
+    
+    return redirect('jobs.application_pipeline', job_id=application.job.id)
 
