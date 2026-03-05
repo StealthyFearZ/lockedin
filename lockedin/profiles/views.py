@@ -50,7 +50,7 @@ def profile_list(request):
     profiles = Profile.objects.all()
     search_term = request.GET.get('search')
     if search_term:
-        profiles = (Profile.objects.filter(skills__icontains=search_term) | Profile.objects.filter(experiences__location__icontains=search_term)).distinct()
+        profiles = (Profile.objects.filter(skills__icontains=search_term) | Profile.objects.filter(location__icontains=search_term)).distinct()
     else:
         profiles = Profile.objects.all()
 
