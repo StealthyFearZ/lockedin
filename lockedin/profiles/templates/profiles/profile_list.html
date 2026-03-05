@@ -48,6 +48,10 @@
                             <small>{{ profile.headline|truncatewords:15 }}</small>
                         </p>
                     {% endif %}
+                    <!-- Add Location -->
+                    <div class="text-center">
+                        <p style="white-space: pre-line;" class="d-inline-block focus-ring py-1 px-2 text-decoration-none border border-primary rounded-2">{{ profile.location }}</p>
+                    </div>
                     <!-- Add first 3 skills-->
                     {% if profile.skills %}
                         {% if not profile.is_private %}
