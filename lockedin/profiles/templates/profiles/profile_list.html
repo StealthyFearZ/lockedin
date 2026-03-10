@@ -9,7 +9,17 @@
             <p class="text-muted">Network with others on LockedIn</p>
         </div>
     </div>
-
+    {% if user.is_authenticated and user.profile.role == 'recruiter' %}
+    <form method="GET">
+        <div class="col-auto mb-2">
+                <div class="input-group col-auto">
+                    <div class="input-group-text">Search</div>
+                    <input type="text" class="form-control" name="search" placeholder="Search for Skills, Locations, or Projects"
+                    value="{{request.GET.search}}">
+                </div>
+        </div>
+    </form>
+    {% endif %}
     <div class="row">
         {% for profile in profiles %}
         <!-- Individual Profile Box -->
@@ -38,6 +48,10 @@
                             <small>{{ profile.headline|truncatewords:15 }}</small>
                         </p>
                     {% endif %}
+                    <!-- Add Location -->
+                    <div class="text-center">
+                        <p style="white-space: pre-line;" class="d-inline-block focus-ring py-1 px-2 text-decoration-none border border-primary rounded-2">{{ profile.location }}</p>
+                    </div>
                     <!-- Add first 3 skills-->
                     {% if profile.skills %}
                         {% if not profile.is_private %}

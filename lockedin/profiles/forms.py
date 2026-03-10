@@ -6,7 +6,7 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['role','headline', 'about', 'skills', 'profile_pic', 
+        fields = ['role','headline', 'about', 'skills', 'location', 'profile_pic', 
                   'linkedin_url', 'github_url', 'portfolio_url', 'is_private']
         widgets = {
             'role': forms.Select(attrs={
@@ -25,6 +25,11 @@ class ProfileForm(forms.ModelForm):
                 'class': 'form-control',
                 'rows': 3,
                 'placeholder': 'Python, Django, Bootstrap, React, SQL, Git (comma seperated)'
+            }),
+            'location': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 1,
+                'placeholder': 'Chicago,IL or Atlanta, GA, etc.'
             }),
             'profile_pic': forms.FileInput(attrs={
                 'class': 'form-control',
@@ -50,6 +55,7 @@ class ProfileForm(forms.ModelForm):
             'headline': 'Professional Headline',
             'about': 'About Me',
             'skills': 'Skills',
+            'location': 'Location',
             'profile_picture': 'Profile Picture',
             'linkedin_url': 'LinkedIn URL',
             'github_url': 'GitHub URL',

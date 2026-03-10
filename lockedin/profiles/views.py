@@ -47,9 +47,15 @@ def profile_edit(request):
 
 @login_required
 def profile_list(request):
+    profiles = Profile.objects.all()
+    search_term = request.GET.get('search')
+    if search_term:
+        profiles = (Profile.objects.filter(skills__icontains=search_term) | Profile.objects.filter(location__icontains=search_term)).distinct()
+    else:
+        profiles = Profile.objects.all()
+
     # View all the profiles, sort currently by time of creation
-    profiles = Profile.objects.select_related('user').all().order_by('-time_created')
-    
+    profiles = profiles.select_related('user').order_by('-time_created')
     context = {
         'profiles': profiles,
         'template_data': {'title': 'Browse Profiles'}
