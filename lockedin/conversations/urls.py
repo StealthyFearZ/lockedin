@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     # Profile URLs
-    path('', views.messages_list, name='messages.list'),
+    path('', views.conversations_list, name='conversations.list'),
 ]
