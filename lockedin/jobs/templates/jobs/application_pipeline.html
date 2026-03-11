@@ -107,7 +107,24 @@
         </div>
         <!-- Closed Stage -->
         <div class="col">
-
+            <div class="col">
+                <div class="card bg-light">
+                    <!-- Make it reddd -->
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-times-circle"></i> Closed
+                            <span class="badge bg-white text-dark">{{ pipeline.closed.count }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body kanban-column" data-status="CL" style="min-height: 500px;">
+                        {% for app in pipeline.closed %}
+                            {% include 'jobs/application_card.html' %}
+                        {% empty %}
+                            <p class="text-muted text-center">No applications</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
