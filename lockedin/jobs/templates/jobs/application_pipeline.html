@@ -6,7 +6,14 @@
 <div class="container-fluid mt-4 mb-5">
     <!-- Add Header stuff -->
     <div class="mb-4">
-
+        <!-- bUTTON to go back to the recruiter dashboard of jobs and applications, et.ccc-->
+        <div class="mb-4">
+            <a href="{% url 'jobs.recruiter_dashboard' %}" class="btn btn-outline-secondary mb-3">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+            <h2><i class="fas fa-columns"></i> Application Pipeline: {{ job.title }}</h2>
+            <p class="text-muted">{{ job.company }} • Total Applications: {{ pipeline.applied.count|add:pipeline.review.count|add:pipeline.interview.count|add:pipeline.offer.count|add:pipeline.closed.count }}</p>
+        </div>
     </div>
 
     <!-- Make kanban Board stuf -->
