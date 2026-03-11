@@ -153,7 +153,7 @@ def map(request):
 @login_required
 def recruiter_dashboard(request):
     # Only show jobs posted by the current user (recruiter)
-    jobs = Job.objects.filter(recruiter=request.user).order_by('-date_posted')
+    jobs = Job.objects.filter(recruiter=request.user).order_by('-created_at')
     
     context = {
         'jobs': jobs,
@@ -198,14 +198,8 @@ def update_application_status(request, application_id):
             application.status = new_status
             application.save()
             messages.success(request, f'Application status updated to {application.get_status_display()}')
-            
-            # If AJAX request, return JSON
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({'success': True, 'status': application.get_status_display()})
         else:
             messages.error(request, 'Invalid status')
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({'success': False, 'error': 'Invalid status'})
     
     return redirect('jobs.application_pipeline', job_id=application.job.id)
 
@@ -218,8 +212,5 @@ def update_application_note(request, application_id):
         application.note = note[:150] # Can only be 150 chars
         application.save()
         messages.success(request, 'Note updated successfully')
-        
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'success': True})
     
     return redirect('jobs.application_pipeline', job_id=application.job.id)
