@@ -86,7 +86,24 @@
         </div>
         <!-- Offer Stage -->
         <div class="col">
-
+            <div class="col">
+                <div class="card bg-light">
+                    <!-- Make Green -->
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-gift"></i> Offer
+                            <span class="badge bg-white text-dark">{{ pipeline.offer.count }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body kanban-column" data-status="OF" style="min-height: 500px;">
+                        {% for app in pipeline.offer %}
+                            {% include 'jobs/application_card.html' %}
+                        {% empty %}
+                            <p class="text-muted text-center">No applications</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- Closed Stage -->
         <div class="col">
