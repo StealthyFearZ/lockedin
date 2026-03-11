@@ -20,7 +20,26 @@
     <div class="row g-3">
         <!-- Applied Stage -->
         <div class="col">
-
+            <div class="card bg-light">
+                <!-- Make headjng grey-->
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-inbox"></i> Applied
+                        <!-- Display number applied in column-->
+                        <span class="badge bg-white text-dark">{{ pipeline.applied.count }}</span>
+                    </h5>
+                </div>
+                <!-- Display the applicant basic information and stuff-->
+                <div class="card-body kanban-column" data-status="AP" style="min-height: 500px;">
+                    <!-- For each application ,.. -->
+                    {% for app in pipeline.applied %}
+                        <!-- Make a mini page that gets put on here -->
+                        {% include 'jobs/application_card.html' %}
+                    {% empty %}
+                        <p class="text-muted text-center">No applications</p>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
         <!-- Review Stage -->
         <div class="col">
