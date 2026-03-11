@@ -64,7 +64,25 @@
         </div>
         <!-- Interview Stage -->
         <div class="col">
-
+            <div class="col">
+                <div class="card bg-light">
+                    <!-- Make Yellow -->
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="fas fa-comments"></i> Interview
+                            <!-- Make da bage dark cause it's a light background -->
+                            <span class="badge bg-white text-dark">{{ pipeline.interview.count }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body kanban-column" data-status="IN" style="min-height: 500px;">
+                        {% for app in pipeline.interview %}
+                            {% include 'jobs/application_card.html' %}
+                        {% empty %}
+                            <p class="text-muted text-center">No applications</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- Offer Stage -->
         <div class="col">
