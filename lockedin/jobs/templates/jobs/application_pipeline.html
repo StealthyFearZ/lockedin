@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Big container holding the page stuff -->
+<div class="container-fluid mt-4 mb-5">
+    <!-- Add Header stuff -->
+    <div class="mb-4">
+        <!-- bUTTON to go back to the recruiter dashboard of jobs and applications, et.ccc-->
+        <div class="mb-4">
+            <a href="{% url 'jobs.recruiter_dashboard' %}" class="btn btn-outline-secondary mb-3">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+            <h2><i class="fas fa-columns"></i> Application Pipeline: {{ job.title }}</h2>
+            <p class="text-muted">{{ job.company }} • Total Applications: {{ pipeline.applied.count|add:pipeline.review.count|add:pipeline.interview.count|add:pipeline.offer.count|add:pipeline.closed.count }}</p>
+        </div>
+    </div>
+
+    <!-- Make kanban Board stuf -->
+    <div class="row g-3">
+        <!-- Applied Stage -->
+        <div class="col">
+            <div class="card bg-light">
+                <!-- Make headjng grey-->
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-inbox"></i> Applied
+                        <!-- Display number applied in column-->
+                        <span class="badge bg-white text-dark">{{ pipeline.applied.count }}</span>
+                    </h5>
+                </div>
+                <!-- Display the applicant basic information and stuff-->
+                <div class="card-body kanban-column" data-status="AP" style="min-height: 500px;">
+                    <!-- For each application ,.. -->
+                    {% for app in pipeline.applied %}
+                        <!-- Make a mini page that gets put on here -->
+                        {% include 'jobs/application_card.html' %}
+                    {% empty %}
+                        <p class="text-muted text-center">No applications</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- Review Stage -->
+        <div class="col">
+            <div class="col">
+                <div class="card bg-light">
+                    <!-- Make it blue -->
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-search"></i> Review
+                            <span class="badge bg-white text-dark">{{ pipeline.review.count }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body kanban-column" data-status="RE" style="min-height: 500px;">
+                        {% for app in pipeline.review %}
+                            {% include 'jobs/application_card.html' %}
+                        {% empty %}
+                            <p class="text-muted text-center">No applications</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Interview Stage -->
+        <div class="col">
+            <div class="col">
+                <div class="card bg-light">
+                    <!-- Make Yellow -->
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="fas fa-comments"></i> Interview
+                            <!-- Make da bage dark cause it's a light background -->
+                            <span class="badge bg-white text-dark">{{ pipeline.interview.count }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body kanban-column" data-status="IN" style="min-height: 500px;">
+                        {% for app in pipeline.interview %}
+                            {% include 'jobs/application_card.html' %}
+                        {% empty %}
+                            <p class="text-muted text-center">No applications</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Offer Stage -->
+        <div class="col">
+            <div class="col">
+                <div class="card bg-light">
+                    <!-- Make Green -->
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-gift"></i> Offer
+                            <span class="badge bg-white text-dark">{{ pipeline.offer.count }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body kanban-column" data-status="OF" style="min-height: 500px;">
+                        {% for app in pipeline.offer %}
+                            {% include 'jobs/application_card.html' %}
+                        {% empty %}
+                            <p class="text-muted text-center">No applications</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Closed Stage -->
+        <div class="col">
+            <div class="col">
+                <div class="card bg-light">
+                    <!-- Make it reddd -->
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-times-circle"></i> Closed
+                            <span class="badge bg-white text-dark">{{ pipeline.closed.count }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body kanban-column" data-status="CL" style="min-height: 500px;">
+                        {% for app in pipeline.closed %}
+                            {% include 'jobs/application_card.html' %}
+                        {% empty %}
+                            <p class="text-muted text-center">No applications</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

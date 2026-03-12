@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Main big containner -->
+<div class="container mt-4 mb-5">
+    <!-- Make header thingy -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-briefcase"></i> Recruiter Dashboard</h2>
+        <a href="{% url 'jobs.post' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Post New Job
+        </a>
+    </div>
+
+    <!-- If there are jobs available -->
+    {% if jobs %}
+        <!-- Main dashboard item -->
+        <div class="row">
+            {% for job in jobs %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <!-- display Ttiel -->
+                            <h5 class="card-title">{{ job.title }}</h5>
+                            <!-- Company -->
+                            <h6 class="text-muted">{{ job.company }}</h6>
+                            <!-- Location -->
+                            <p class="text-muted small">
+                                <i class="fas fa-map-marker-alt"></i> {{ job.location }}
+                            </p>
+                            
+                            <!-- # applications -->
+                            <div class="mb-3">
+                                <span class="badge bg-info">
+                                    {{ job.application_set.count }} Application{{ job.application_set.count|pluralize }}
+                                </span>
+                            </div>
+                            
+                            <!-- Buttons to view kanban and job details-->
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'jobs.application_pipeline' job.id %}" 
+                                class="btn btn-sm btn-primary">
+                                    <i class="fas fa-columns"></i> View Pipeline
+                                </a>
+                                <a href="{% url 'jobs.listing' job.id %}" 
+                                class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-eye"></i> View Job
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Display when job was created -->
+                        <div class="card-footer text-muted small">
+                            Posted {{ job.created_at|timesince }} ago
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    <!-- No Jobs Available-->
+    {% else %}
+        <!-- Say there are no jobs -->
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle"></i> 
+            You haven't posted any jobs yet. 
+            <a href="{% url 'jobs.post' %}">Post your first job</a>
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
