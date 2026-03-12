@@ -17,7 +17,9 @@ class Profile(models.Model):
     profile_pic  = models.ImageField(null=True, upload_to='img/', blank=True)
     is_private   = models.BooleanField(default=False)
     email        = models.EmailField(max_length=254, unique=True, blank=True, null=True)
-    location = models.CharField(max_length=150, default="Atlanta, GA")
+    location     = models.CharField(max_length=150, default="Atlanta, GA")
+    latitude     = models.FloatField(null=True, blank=True)     # determined automatically using geopy, otherwise null
+    longitude    = models.FloatField(null=True, blank=True)     # determined automatically using geopy, otherwise null
     # URL Links
     github_url   = models.URLField(blank=True, validators=[URLValidator()])
     linkedin_url = models.URLField(blank=True, validators=[URLValidator()])
