@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Job, Application
 from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
+from django.contrib import messages
 from django.http import JsonResponse
+from .forms import JobForm
+from profiles.models import Profile
 
 # Create your views here.
 def index(request):
@@ -17,7 +20,7 @@ def index(request):
         jobs = jobs.filter(location__icontains=location)
 
     classification = request.GET.get('classification','').strip()
-    if location:
+    if classification:
         jobs = jobs.filter(classification__icontains=classification)
 
     min_salary = request.GET.get('min_salary','').strip()
@@ -56,6 +59,7 @@ def listing(request, id):
     job = Job.objects.get(id=id)
     template_data = {}
     template_data['title'] = job.title
+    template_data['job'] = job
     template_data['start_date'] = job.start_date
     template_data['end_date'] = job.end_date
     template_data['description'] = job.description
@@ -70,11 +74,49 @@ def listing(request, id):
 
 @login_required
 def edit(request, id):
-    return None
+    # Edit the job using same template as post basically
+    job = get_object_or_404(Job, id=id, recruiter=request.user)
+    
+    if request.method == 'POST':
+        form = JobForm(request.POST, instance=job)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Job updated successfully!')
+            return redirect('jobs.listing', id=job.id)
+    else:
+        form = JobForm(instance=job)
+    
+    context = {
+        'template_data': {
+            'title': f'Edit Job: {job.title}',
+            'form': form,
+            'job': job
+        }
+    }
+    return render(request, 'jobs/edit.html', context)
+
 
 @login_required
 def post(request):
-    return None
+      # Post the job and make sure it saves the recruiter
+    if request.method == 'POST':
+        form = JobForm(request.POST)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.recruiter = request.user
+            job.save()
+            messages.success(request, 'Job posted successfully!')
+            return redirect('jobs.recruiter_dashboard')
+    else:
+        form = JobForm()
+    
+    context = {
+        'template_data': {
+            'title': 'Post a Job',
+            'form': form
+        }
+    }
+    return render(request, 'jobs/post.html', context)
 
 def map(request):
     jobs = Job.objects.all()
