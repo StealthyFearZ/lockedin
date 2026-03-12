@@ -103,6 +103,98 @@
               </div>
             </div>
 
+            <div class="row">
+              {% for profile in template_data.profiles %}
+                {% commonSkill template_data.skills profile.get_skills_list as has_common %}
+                  {% if has_common %}
+                    <!-- Individual Profile Box (All taken fromm profile_list) -->
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <div class="text-center mb-3">
+                                    {% if profile.profile_pic %}
+                                        <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" 
+                                            class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                                    {% else %} 
+                                        <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center" 
+                                            style="width: 100px; height: 100px;">
+                                            <i class="fas fa-user fa-3x text-white"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Add Name / Username-->
+                                <h5 class="card-title text-center">
+                                    {{ profile.user.get_full_name|default:profile.user.username }}
+                                </h5>
+                                <!-- Add Headline -->
+                                {% if profile.headline %}
+                                    <p class="text-muted text-center mb-3">
+                                        <small>{{ profile.headline|truncatewords:15 }}</small>
+                                    </p>
+                                {% endif %}
+                                <!-- Add Location -->
+                                <div class="text-center">
+                                    <p style="white-space: pre-line;" class="d-inline-block focus-ring py-1 px-2 text-decoration-none border border-primary rounded-2">{{ profile.location }}</p>
+                                </div>
+
+                                {% if not profile.is_private %} <!--If profile is visible-->
+                                  <div class="mb-3">
+                                    <small class="text-muted">Matches these posted jobs:</small>
+                                    <div class="d-flex gap-2 flex-wrap mt-1">
+                                      {% for posted_job in template_data.posted_jobs %}
+                                        {% commonSkill profile.get_skills_list posted_job.get_skills_list as matches_job %} <!--Check if the profile and job postings match-->
+                                        {% if matches_job %}
+                                          <span class="badge bg-success">{{ posted_job.title }}</span> <!--Add job title as a badge in a list-->
+                                        {% endif %}
+                                      {% endfor %}
+                                    </div>
+                                  </div>
+                                {% endif %}
+
+                                {% if profile.skills %}
+                                  {% if not profile.is_private %}
+                                  <div class="mb-3">
+                                    <small class="text-muted">Skills:</small>
+                                    <div class="d-flex gap flex-wrap mt-1">
+                                      {% for skill in profile.get_skills_list %} 
+                                        {% if skill in template_data.skills %} <!--Show matching skills first-->
+                                          <span class="badge bg-success">{{ skill }}</span>
+                                        {% endif %}
+                                      {% endfor %}
+
+                                      {% for skill in profile.get_skills_list|slice:":2" %}
+                                        {% if not skill in template_data.skills %} <!-- Showe skills that don't match later-->
+                                          <span class="badge bg-secondary">{{ skill }}</span>
+                                        {% endif %}
+                                      {% endfor %}
+
+                                      {% if profile.get_skills_list|length > 3 %}
+                                        <span class="badge bg-light text-dark">+ more</span>
+                                      {% endif %}
+                                    </div>
+                                  </div>
+                                  {% endif %}
+                                {% endif %}
+
+                                {% if not profile.is_private %}
+                                  <div class="text-center mt-3">
+                                    <a href="{% url 'profiles.detail' username=profile.user.username %}"
+                                      class="btn btn-primary btn-sm"> <!-- Link to the profile page for username if Teacher wants access-->
+                                      <i class="fas fa-eye"></i> View Profile
+                                    </a>
+                                  </div>
+                                {% else %}
+                                  <div class="text-center mt-3">
+                                    <h6 class="card-title text-center">Private</h6>
+                                  </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                  {% endif %}
+              {% endfor %}
+            </div>
 
           {% else %} <!-- In case there are no jobs listed by Recruiter or no people with matching skills-->
             <div class="card h-100 shadow-sm">
