@@ -185,6 +185,26 @@ def recruiter_dashboard(request):
     return render(request, 'jobs/recruiter_dashboard.html', context)
 
 @login_required
+def application_map(request, job_id):
+    #get job
+    job = get_object_or_404(Job, id=job_id, recruiter=request.user)
+    
+    # find applications
+    applications = Application.objects.filter(job=job).select_related('user', 'user__profile')
+
+    # get profiles from applications
+    applicant_profiles = []
+    for application in applications:
+        applicant_profiles.append(application.user.profile) # from here we can access profile latitude & longitude
+    
+    context = {
+        'job': job,
+        'applicant_profiles': applicant_profiles,
+        'template_data': {'title': f'Application Map - {job.title}'}
+    }
+    return render(request, 'jobs/application_map.html', context)
+
+@login_required
 def application_pipeline(request, job_id):
     #get job
     job = get_object_or_404(Job, id=job_id, recruiter=request.user)
