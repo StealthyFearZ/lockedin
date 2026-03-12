@@ -4,11 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
 from django.contrib import messages
 from django.http import JsonResponse
-<<<<<<< HEAD
 from .forms import JobForm
 from profiles.models import Profile
-=======
->>>>>>> a2f1b4365fa61219d553fd6d688c4e75bbba9657
 
 # Create your views here.
 def index(request):
