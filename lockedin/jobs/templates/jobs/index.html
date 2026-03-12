@@ -69,7 +69,7 @@
               {% if user.is_authenticated and user.profile.role == 'recruiter' %}
                 <div class="col-auto align-items-right">
                  <a href="{% url 'jobs.post' %}"
-                    class="btn bg-danger text-white d-flex flex-column align-items-center justify-content-right">
+                    class="btn bg-primary text-white d-flex flex-column align-items-center justify-content-right">
                     <span class="fs-4 lh-1">+</span>
                   </a>
                 </div>
@@ -102,9 +102,11 @@
               class="btn bg-dark text-white">
               View
             </a>
+            {% if user.is_authenticated and user != job.recruiter %}
             <a href="{% url 'jobs.apply' id=job.id %}" class="btn bg-dark text-white">
               Apply
             </a>
+            {% endif %}
           </div>
         </div>
       </div>
