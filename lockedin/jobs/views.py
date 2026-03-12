@@ -168,8 +168,11 @@ def map(request):
     template_data = {}
     template_data['title'] = 'Job Map'
     template_data['jobs'] = jobs
-    return render(request, 'jobs/map.html', {"jobs_json": serialize("json", jobs), 
-                                             'template_data': template_data})
+    context = {
+        "jobs_json": serialize("json", jobs),
+        'template_data': template_data
+    }
+    return render(request, 'jobs/map.html', context)
 
 # Kanban Stuff
 
@@ -197,10 +200,14 @@ def application_map(request, job_id):
     for application in applications:
         applicant_profiles.append(application.user.profile) # from here we can access profile latitude & longitude
     
-    context = {
+    template_data = {
+        'title': f'Application Map - {job.title}',
         'job': job,
-        'applicant_profiles': applicant_profiles,
-        'template_data': {'title': f'Application Map - {job.title}'}
+        'applicant_profiles': applicant_profiles,    
+    }
+    context = {
+        "applicant_profiles_json": serialize("json", applicant_profiles),
+        'template_data': template_data
     }
     return render(request, 'jobs/application_map.html', context)
 
