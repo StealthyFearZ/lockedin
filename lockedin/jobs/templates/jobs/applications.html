@@ -46,15 +46,16 @@
           <div class="card-body d-flex justify-content-between align-items-center">
             <div>
                 <h5 class="mb-1">{{app.job.title}} - {{app.date}}</h5>
-                <div class="dropdown mb-2">
-                  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="mb-2">
+                  <span class="badge 
+                    {% if app.status == 'AP' %}bg-secondary
+                    {% elif app.status == 'RE' %}bg-primary
+                    {% elif app.status == 'IN' %}bg-warning text-dark
+                    {% elif app.status == 'OF' %}bg-success
+                    {% elif app.status == 'CL' %}bg-danger
+                    {% endif %}">
                     Status: {{ app.get_status_display }}
-                  </button>
-                  <ul class="dropdown-menu">
-                    {% for code, label in template_data.status_choices %}
-                      <li><a class="dropdown-item" href="{% url 'jobs.change_status' appId=app.id targetStatus=code %}">{{ label }}</a></li>
-                    {% endfor %}
-                  </ul>
+                  </span>
                 </div>
                 <p>
                     {{app.job.location}} | {{app.job.classification}} | {{app.job.start_date}} - {{app.job.end_date}}
