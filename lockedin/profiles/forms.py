@@ -1,5 +1,6 @@
 from django import forms
 from .models import Profile, Experience, Education
+from geopy.geocoders import Nominatim
 
 class ProfileForm(forms.ModelForm):
     # Creates and Updates Profiles
@@ -29,7 +30,7 @@ class ProfileForm(forms.ModelForm):
             'location': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 1,
-                'placeholder': 'Chicago,IL or Atlanta, GA, etc.'
+                'placeholder': 'Street address or city, state'
             }),
             'profile_pic': forms.FileInput(attrs={
                 'class': 'form-control',
@@ -61,6 +62,26 @@ class ProfileForm(forms.ModelForm):
             'github_url': 'GitHub URL',
             'portfolio_url': 'Portfolio Website',
         }
+    
+    # override default form save function to also calculate geocoordinates of the user (if location given)
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+
+        # use geopy to geocode the location
+        location_text = self.cleaned_data.get('location')   # clean location text
+        if location_text:                                   # if not holding null
+            geolocator = Nominatim(user_agent="lockedin_app")   # create geolocating client
+            result = geolocator.geocode(location_text)          # geocode location text
+
+            if result:  # if we get a valid response
+                profile.latitude = result.latitude
+                profile.longitude = result.longitude
+
+        if commit:
+            profile.save()
+
+        return profile
+
 
 class ExperienceForm(forms.ModelForm):
     # CRUD for Experiences
