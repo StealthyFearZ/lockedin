@@ -86,3 +86,11 @@ class Education(models.Model):
     
     class Meta:
         ordering = ['-start_date']
+
+class ProfileSearch(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile_search")
+    search_term = models.CharField(max_length=255)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username + " | " + self.search_term

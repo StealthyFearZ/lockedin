@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Profile, Experience, Education
+from .models import Profile, Experience, Education, ProfileSearch
 from .forms import ProfileForm, ExperienceForm, EducationForm
 
 # Profile Views
@@ -50,16 +50,26 @@ def profile_list(request):
     profiles = Profile.objects.all()
     search_term = request.GET.get('search')
     if search_term:
-        profiles = (Profile.objects.filter(skills__icontains=search_term) | Profile.objects.filter(location__icontains=search_term)).distinct()
+        profiles = Profile.objects.filter(skills__icontains=search_term) | Profile.objects.filter(location__icontains=search_term)
+        profiles = profiles.distinct()
+        if request.GET.get("save") == "true" and search_term:
+            ProfileSearch.objects.create(
+                user=request.user,
+                search_term=search_term
+            )        
     else:
         profiles = Profile.objects.all()
 
     # View all the profiles, sort currently by time of creation
     profiles = profiles.select_related('user').order_by('-time_created')
+    searches = ProfileSearch.objects.filter(user=request.user)
     context = {
         'profiles': profiles,
-        'template_data': {'title': 'Browse Profiles'}
+        'template_data': {'title': 'Browse Profiles'},
+        'searches' : searches
     }
+    if search_term: 
+        context['search'] = search_term    
     return render(request, 'profiles/profile_list.html', context)
 
 # Experience Views
