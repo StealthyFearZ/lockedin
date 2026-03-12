@@ -10,18 +10,18 @@ class Job(models.Model):
         ('onsite', 'On-Site'),
     ]
     id = models.AutoField(primary_key=True)
-    created_at = models.DateTimeField(auto_now_add="true")
+    created_at = models.DateTimeField(auto_now_add=True)
     title = models.CharField(help_text="What is the job title?", max_length = 255)
     start_date = models.DateTimeField()
-    end_date = models.DateTimeField(blank="true", null="true")
+    end_date = models.DateTimeField(blank=True, null=True)
     description = models.TextField()
     recruiter = models.ForeignKey(User, on_delete=models.CASCADE)
-    skills = models.TextField(help_text="List all of your skills(E.g: Project Management, Agile Methodologies, etc.)")
+    skills = models.TextField(help_text="Required skills(E.g: Project Management, Agile Methodologies, etc.)")
     salary_upper = models.IntegerField()
     salary_lower = models.IntegerField()
-    location = models.CharField(help_text="Where is this job listing located? Where do employees work from?", max_length = 255)
-    location_x = models.FloatField(help_text="X-Coordinate of office location")
-    location_y = models.FloatField(help_text="Y-Coordinate of office location")
+    location = models.CharField(help_text="Work location. Can accept address, city/state, etc.", max_length = 255)
+    latitude = models.FloatField(null=True)     # determined automatically using geopy, otherwise null
+    longitude = models.FloatField(null=True)    # determined automatically using geopy, otherwise null
     classification = models.CharField(help_text="E.g: On-Site, Hybrid, Remote", max_length = 255, choices=CLASSIFICATION_CHOICES)
     isSponsoring = models.BooleanField(help_text="True: for OPT/CPT, F-1, J-1, etc., False: US citizens/Green Card holders")
 

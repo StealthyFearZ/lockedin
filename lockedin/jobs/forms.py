@@ -1,11 +1,12 @@
 from django import forms
 from .models import Job
+from geopy.geocoders import Nominatim
 
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
         fields = ['title','start_date', 'end_date', 'description', 'skills', 
-                  'salary_upper', 'salary_lower', 'location', 'location_x', 'location_y', 'classification', 'isSponsoring']
+                  'salary_upper', 'salary_lower', 'location', 'classification', 'isSponsoring']
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -27,7 +28,7 @@ class JobForm(forms.ModelForm):
             'skills': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 3,
-                'placeholder': 'Python, Django, Bootstrap, React, SQL, Git (comma seperated)'
+                'placeholder': 'Python, Django, Bootstrap, React, SQL, Git'
             }),
             'salary_upper': forms.NumberInput(attrs={
                 'class': 'form-control',
@@ -39,15 +40,7 @@ class JobForm(forms.ModelForm):
             }),
             'location' : forms.TextInput(attrs={
                 'class' : 'form-control',
-                'placeholder' : 'e.g. New York, Atlanta'
-            }),
-            'location_x' : forms.NumberInput(attrs={
-                'class' : 'form-control',
-                'placeholder' : 'X-Coordinates'
-            }),
-            'location_y' : forms.NumberInput(attrs={
-                'class' : 'form-control',
-                'placeholder' : 'Y-Coordinates'
+                'placeholder' : 'Enter as a street address or city, state. Can also input N/A, etc.'
             }),
             'classification' : forms.Select(attrs={
                 'class' : 'form-select'
@@ -64,12 +57,35 @@ class JobForm(forms.ModelForm):
             'skills' : 'Skills', 
             'salary_upper' : 'Max. Salary', 
             'salary_lower' : 'Min. Salary', 
-            'location' : 'Location', 
-            'location_x' : 'Location X-Coords',
-            'location_y' : 'Location Y-Coords',
+            'location' : 'Location',
             'classification' : 'Job Classfication', 
             'isSponsoring' : 'Visa Sponsoring'
         }
+    
+    # override default form save function to also calculate geocoordinates of the job location (if location given)
+    def save(self, commit=True):
+        job = super().save(commit=False)
+
+        # use geopy to geocode the location
+        location_text = self.cleaned_data.get('location')   # clean location text
+        if (location_text and                               # if not holding null
+                location_text.upper() != "N/A" and          # ignore a few "no location" signifiers
+                location_text.upper() != "NA" and
+                location_text.upper() != "NOT APPLICABLE" and
+                location_text.upper() != "REMOTE" and
+                location_text.upper() != "NO LOCATION"):
+            
+            geolocator = Nominatim(user_agent="lockedin_app")   # create geolocating client
+            result = geolocator.geocode(location_text)          # geocode location text
+
+            if result:  # if we get a valid response, overwrite coordinate fields
+                job.latitude = result.latitude
+                job.longitude = result.longitude
+
+        if commit:
+            job.save()
+
+        return job
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

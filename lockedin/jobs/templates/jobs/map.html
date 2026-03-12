@@ -44,7 +44,7 @@
 <div id="map"></div>
 
 <script>
-    var map = L.map('map').setView([33.776174, -84.398815], 14); // Location of Georgia Tech campus
+    var map = L.map('map').setView([33.776174, -84.398815], 5); // Location of Georgia Tech campus
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -88,13 +88,16 @@
 
         // Redraw markers
         jobs.forEach(j => {
-                x = j.fields.location_x
-                y = j.fields.location_y
-                // Filter by leaflet's Latlng distanceTo function and only add markers within specified distance
-                // Currently uses Georgia Tech as reference location
-                if(L.latLng([x, y]).distanceTo([33.776174, -84.398815]) < (miles * 1609.34)) {
-                    marker = L.marker([x, y]).addTo(map)
-                    marker.bindPopup(`<b>${j.fields.title}</b><br>${j.fields.location}`)
+                lat = j.fields.latitude
+                lng = j.fields.longitude
+                // if lat and lng are both non-null
+                if (lat && lng) {
+                    // Filter by leaflet's Latlng distanceTo function and only add markers within specified distance
+                    // Currently uses Georgia Tech as reference location
+                    if(L.latLng([lat, lng]).distanceTo([33.776174, -84.398815]) < (miles * 1609.34)) {
+                        marker = L.marker([lat, lng]).addTo(map)
+                        marker.bindPopup(`<b>${j.fields.title}</b><br>${j.fields.location}`)
+                    }
                 }
             });
     }
