@@ -85,9 +85,15 @@
         </div>
 
         <!-- Add The Skills Section -->
-        <div>
-
+        {% if app.user.profile.skills %}
+        <div class="mb-2">
+            <!-- Show maximum 3 skills !-->
+            {% for skill in app.user.profile.get_skills_list|slice:":3" %}
+                <span class="badge bg-secondary">{{ skill }}</span>
+            {% endfor %}
         </div>
+        {% endif %}
+
         <!-- Add The Notes section-->
         <div>
 
