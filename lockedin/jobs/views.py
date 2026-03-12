@@ -69,15 +69,53 @@ def listing(request, id):
     template_data['location'] = job.location
     template_data['classification'] = job.classification
     template_data['sponsoring'] = job.isSponsoring
+    template_data['job'] = job
     return render(request, 'jobs/listings.html', {'template_data' : template_data})
 
 @login_required
 def edit(request, id):
-    return None
+    # Edit the job using same template as post basically
+    job = get_object_or_404(Job, id=id, recruiter=request.user)
+    
+    if request.method == 'POST':
+        form = JobForm(request.POST, instance=job)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Job updated successfully!')
+            return redirect('jobs.listing', id=job.id)
+    else:
+        form = JobForm(instance=job)
+    
+    context = {
+        'template_data': {
+            'title': f'Edit Job: {job.title}',
+            'form': form,
+            'job': job
+        }
+    }
+    return render(request, 'jobs/edit.html', context)
 
 @login_required
 def post(request):
-    return None
+    # Post the job and make sure it saves the recruiter
+    if request.method == 'POST':
+        form = JobForm(request.POST)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.recruiter = request.user
+            job.save()
+            messages.success(request, 'Job posted successfully!')
+            return redirect('jobs.recruiter_dashboard')
+    else:
+        form = JobForm()
+    
+    context = {
+        'template_data': {
+            'title': 'Post a Job',
+            'form': form
+        }
+    }
+    return render(request, 'jobs/post.html', context)
 
 def map(request):
     jobs = Job.objects.all()
