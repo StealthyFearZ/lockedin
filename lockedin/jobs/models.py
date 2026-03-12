@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Job(models.Model):
     CLASSIFICATION_CHOICES = [
-        ('remote', 'Remote'),
-        ('hybrid', 'Hybrid'),
-        ('onsite', 'On-Site'),
+        ('Remote', 'remote'),
+        ('Hybrid', 'hybrid'),
+        ('On-Site', 'on-site'),
     ]
     id = models.AutoField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
