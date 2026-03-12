@@ -50,7 +50,14 @@ def profile_list(request):
     profiles = Profile.objects.all()
     search_term = request.GET.get('search')
     if search_term:
-        profiles = (Profile.objects.filter(skills__icontains=search_term) | Profile.objects.filter(location__icontains=search_term)).distinct()
+        profiles = (
+            Profile.objects.filter(skills__icontains=search_term) |
+            Profile.objects.filter(location__icontains=search_term)| 
+            Profile.objects.filter(experiences__location__icontains=search_term) | # check locations from experiences as well
+            Profile.objects.filter(educations__location__icontains=search_term) | # check locations from education as well
+            Profile.objects.filter(experiences__job__icontains=search_term) | 
+            Profile.objects.filter(educations__field_of_study__icontains=search_term)
+            ).distinct() # Filter by skills, location, and projects. Client said Projects can be exchanged for Job Experience and College Field of Study
     else:
         profiles = Profile.objects.all()
 
