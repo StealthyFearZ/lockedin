@@ -30,9 +30,19 @@
                         <!-- Should looks similar to linkedIn, sort of...-->
                         <p class="text-muted mb-2"><strong>{{ profile.headline }}</strong></p>
                     {% endif %}
-
+                    <p style="white-space: pre-line;" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">{{ profile.location }}</p>
                     <!-- ADD THE SOCIAL LINKS HERE-->
                     <div class="mb-3">
+                        {% if profile.linkedin_url %}
+                            <div target="_blank" class="btn btn-sm btn-outline-primary me-2">
+                                <i class="fas fa-message"></i> Message
+                            </div>
+                        {% endif %}
+                        {% if profile.linkedin_url %}
+                            <div target="_blank" class="btn btn-sm btn-outline-primary me-2">
+                                <i class="fas fa-hammer"></i> Email
+                            </div>
+                        {% endif %}
                         {% if profile.linkedin_url %}
                             <a href="{{ profile.linkedin_url }}" target="_blank" class="btn btn-sm btn-outline-primary me-2">
                                 <i class="fab fa-linkedin"></i> LinkedIn
