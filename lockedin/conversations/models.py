@@ -1,20 +1,24 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
-# Create your models here.
-class Conversation(models.Model):
-    messengers = models.ManyToManyField(User, related_name="conversations")
-    created_time = models.DateTimeField(auto_now_add=True)
-    updated_time = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return "conversation"
-    
 class Message(models.Model):
-    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
-    publisher = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    sender = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='sent_messages',
+        null=True, 
+        blank=True
+    )    
+    recipient = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='received_messages',
+        null=True,
+        blank=True
+    )
     content = models.TextField()
-    sent_time = models.DateTimeField(auto_now_add=True)
+    sent = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.content
+        return f"{self.sender} -> {self.recipient}: {self.content[:20]}"

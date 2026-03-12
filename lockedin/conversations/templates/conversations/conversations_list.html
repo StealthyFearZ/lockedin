@@ -2,15 +2,43 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4 mb-5">
-    <div class="row">
-        <div class="col-12 mb-4">
-            <h2><i class="fas fa-message"></i> Your Messages</h2>
-        <hr>
-        {% for conversation in template_data.conversations %}
-        <button class="alert-success"><h5>Hi</h5></button>
-        {% endfor %}    
-    </div>
-    </div>
-</div>
+        <div class = "container mt-4 mb-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Message {{ other_user.username }}</h4>
+                </div>
+                <div class="card-body" style="height: 400px;">
+                    {% if messages.count > 0  %}
+                        {% for message in messages %}
+                            {% if message.sender == request.user %}
+                            <div class="d-flex mb-3 justify-content-end">
+                                <div class="alert alert-primary text-dark" style="max-width: 70%;">
+                                    <p class="mb-1">{{ message.content }}</p>
+                                    <small class="text-muted">{{ message.sent|date:"M d, Y H:i:s" }}</small>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="d-flex mb-3 justify-content-start">
+                                <div class="alert alert-light text-dark" style="max-width: 70%;">
+                                    <p class="mb-1">{{ message.content }}</p>
+                                    <small class="text-muted">{{ message.sent|date:"M d, Y H:i" }}</small>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                            <p class="text-center text-muted mt-3">No messages yet.</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" name="content" class="form-control" placeholder="Type a message..." required>
+                            <button class="btn btn-primary" type="submit">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 {% endblock content %}
