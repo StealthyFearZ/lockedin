@@ -11,7 +11,7 @@ def conversation(request, username):
     messages = Message.objects.filter(
         (Q(sender=request.user) & Q(recipient=other_user)) |
         (Q(sender=other_user) & Q(recipient=request.user))
-    ).order_by('sent_time')  # chronological
+    ).order_by('sent')
 
     if request.method == "POST":
         content = request.POST.get("content", "").strip()

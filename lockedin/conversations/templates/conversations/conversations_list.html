@@ -2,25 +2,33 @@
 {% load static %}
 
 {% block content %}
-
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class = "container mt-4 mb-5">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Chat with {{ other_user.username }}</h4>
+                    <h4 class="mb-0">Message {{ other_user.username }}</h4>
                 </div>
-                <div class="card-body" style="height: 500px; overflow-y: auto;">
-                    {% for msg in messages %}
-                        <div class="d-flex mb-3 {% if msg.sender == request.user %}justify-content-end{% else %}justify-content-start{% endif %}">
-                            <div class="message-bubble {% if msg.sender == request.user %}bg-primary text-white{% else %}bg-light text-dark{% endif %} p-2 rounded" style="max-width: 70%;">
-                                <p class="mb-1">{{ msg.content }}</p>
-                                <small class="text-muted">{{ msg.sent_time|date:"M d, H:i" }}</small>
+                <div class="card-body" style="height: 400px;">
+                    {% if messages.count > 0  %}
+                        {% for message in messages %}
+                            {% if message.sender == request.user %}
+                            <div class="d-flex mb-3 justify-content-end">
+                                <div class="alert alert-primary text-dark" style="max-width: 70%;">
+                                    <p class="mb-1">{{ message.content }}</p>
+                                    <small class="text-muted">{{ message.sent|date:"M d, Y H:i:s" }}</small>
+                                </div>
                             </div>
-                        </div>
-                    {% empty %}
-                        <p class="text-center text-muted mt-3">No messages yet. Say hello!</p>
-                    {% endfor %}
+                            {% else %}
+                            <div class="d-flex mb-3 justify-content-start">
+                                <div class="alert alert-light text-dark" style="max-width: 70%;">
+                                    <p class="mb-1">{{ message.content }}</p>
+                                    <small class="text-muted">{{ message.sent|date:"M d, Y H:i" }}</small>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                            <p class="text-center text-muted mt-3">No messages yet.</p>
+                    {% endif %}
                 </div>
                 <div class="card-footer">
                     <form method="post">
@@ -33,18 +41,4 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<style>
-.message-bubble {
-    border-radius: 15px;
-    word-wrap: break-word;
-}
-
-.bg-primary {
-    background-color: #0d6efd !important;
-}
-</style>
-
 {% endblock content %}
