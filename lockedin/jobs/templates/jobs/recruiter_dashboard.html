@@ -62,7 +62,9 @@
     {% else %}
         <!-- Say there are no jobs -->
         <div class="alert alert-info text-center">
-
+            <i class="fas fa-info-circle"></i> 
+            You haven't posted any jobs yet. 
+            <a href="{% url 'jobs.post' %}">Post your first job</a>
         </div>
     {% endif %}
 
