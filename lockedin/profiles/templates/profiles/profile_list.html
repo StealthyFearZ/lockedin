@@ -79,6 +79,11 @@
                         <div class="btn btn-primary btn-sm">
                             <i class="fas fa-message"></i> Send Message
                         </div>
+                        {% if profile.email %}
+                            <a href="mailto:{{ profile.email }}" target="_blank" class="btn btn-sm btn-primary me-2">
+                                <i class="fas fa-briefcase"></i> Email
+                            </a>
+                        {% endif %}
                     </div>
                     {% else %}
                     <div class="text-center mt-3">

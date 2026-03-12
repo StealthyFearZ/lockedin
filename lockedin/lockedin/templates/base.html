@@ -68,9 +68,19 @@
                   <i class="fa-solid fa-briefcase d-block"></i>
                   <small>Jobs</small>
                 </a>
+                {% if user.profile.role == 'recruiter' %}
+                  <a class="nav-link text-center" href="{% url 'jobs.recruiter_dashboard' %}"> 
+                    <i class="fa-solid fa-clipboard-user d-block"></i>
+                    <small>Manage</small>
+                  </a>
+                {% endif %}
                 <a class="nav-link text-center" href="{% url 'jobs.applications' %}">
                   <i class="fa-solid fa-building-circle-check d-block"></i>
                   <small>Applications</small>
+                </a>
+                <a class="nav-link text-center" href="{% url 'conversations.list' %}">
+                  <i class="fa-solid fa-phone d-block"></i>
+                  <small>Messages</small>
                 </a>
                 <a class="nav-link text-center" href="{% url 'profiles.my_profile' %}">
                   <i class="fas fa-user-circle d-block"></i>

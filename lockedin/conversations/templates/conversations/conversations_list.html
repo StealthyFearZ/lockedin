@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <h2><i class="fas fa-message"></i> Your Messages</h2>
+        <hr>
+        {% for conversation in template_data.conversations %}
+        <button class="alert-success"><h5>Hi</h5></button>
+        {% endfor %}    
+    </div>
+    </div>
+</div>
+{% endblock content %}

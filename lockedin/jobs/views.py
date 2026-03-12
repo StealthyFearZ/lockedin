@@ -70,6 +70,7 @@ def listing(request, id):
     template_data['location'] = job.location
     template_data['classification'] = job.classification
     template_data['sponsoring'] = job.isSponsoring
+    template_data['job'] = job
     return render(request, 'jobs/listings.html', {'template_data' : template_data})
 
 @login_required
@@ -95,10 +96,9 @@ def edit(request, id):
     }
     return render(request, 'jobs/edit.html', context)
 
-
 @login_required
 def post(request):
-      # Post the job and make sure it saves the recruiter
+    # Post the job and make sure it saves the recruiter
     if request.method == 'POST':
         form = JobForm(request.POST)
         if form.is_valid():
@@ -163,3 +163,78 @@ def edit_application_status(request, appId, targetStatus):
     app.status = targetStatus
     app.save()
     return redirect('jobs.applications')
+
+def map(request):
+    jobs = Job.objects.all()
+    template_data = {}
+    template_data['title'] = 'Job Map'
+    template_data['jobs'] = jobs
+    return render(request, 'jobs/map.html', {"jobs_json": serialize("json", jobs), 
+                                             'template_data': template_data})
+
+# Kanban Stuff
+
+@login_required
+def recruiter_dashboard(request):
+    # Only show jobs posted by the current user (recruiter)
+    jobs = Job.objects.filter(recruiter=request.user).order_by('-created_at')
+    
+    context = {
+        'jobs': jobs,
+        'template_data': {'title': 'Recruiter Dashboard'}
+    }
+    return render(request, 'jobs/recruiter_dashboard.html', context)
+
+@login_required
+def application_pipeline(request, job_id):
+    #get job
+    job = get_object_or_404(Job, id=job_id, recruiter=request.user)
+    
+    # find applications
+    applications = Application.objects.filter(job=job).select_related('user', 'user__profile')
+    
+    # order applications into status of application for kanban board
+    pipeline = {
+        'applied': applications.filter(status=Application.ApplicationChoices.APPLIED),
+        'review': applications.filter(status=Application.ApplicationChoices.REVIEW),
+        'interview': applications.filter(status=Application.ApplicationChoices.INTERVIEW),
+        'offer': applications.filter(status=Application.ApplicationChoices.OFFER),
+        'closed': applications.filter(status=Application.ApplicationChoices.CLOSED),
+    }
+    
+    context = {
+        'job': job,
+        'pipeline': pipeline,
+        'template_data': {'title': f'Applications - {job.title}'}
+    }
+    return render(request, 'jobs/application_pipeline.html', context)
+
+@login_required
+def update_application_status(request, application_id):
+    # Get application
+    if request.method == 'POST':
+        application = get_object_or_404(Application, id=application_id, job__recruiter=request.user)
+        new_status = request.POST.get('status')
+        
+        # Validate new status
+        valid_statuses = [choice[0] for choice in Application.ApplicationChoices.choices]
+        if new_status in valid_statuses:
+            application.status = new_status
+            application.save()
+            messages.success(request, f'Application status updated to {application.get_status_display()}')
+        else:
+            messages.error(request, 'Invalid status')
+    
+    return redirect('jobs.application_pipeline', job_id=application.job.id)
+
+@login_required
+def update_application_note(request, application_id):
+    # add note to applicant
+    if request.method == 'POST':
+        application = get_object_or_404(Application, id=application_id, job__recruiter=request.user)
+        note = request.POST.get('note', '')
+        application.note = note[:150] # Can only be 150 chars
+        application.save()
+        messages.success(request, 'Note updated successfully')
+    
+    return redirect('jobs.application_pipeline', job_id=application.job.id)
