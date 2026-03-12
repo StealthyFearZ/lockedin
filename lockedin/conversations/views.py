@@ -18,4 +18,4 @@ def conversations_list(request, username=None):
 
     template_data = {}
     template_data['conversations'] = conversations
-    return render(request, 'conversations_list.html', template_data)
+    return render(request, 'conversations/conversations_list.html', template_data)
