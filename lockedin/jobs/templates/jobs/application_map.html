@@ -10,6 +10,12 @@
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
 
+<!-- Marker cluster plugin -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
 <style>
     #map {
         height: 500px;
@@ -24,18 +30,41 @@
 <div id="map"></div>
 
 <script>
-    var map = L.map('map').setView([33.776174, -84.398815], 7); // Location of Georgia Tech campus
+    var map = L.map('map').setView([33.776174, -84.398815], 5); // Location of Georgia Tech campus
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+    // Generate javascript object using JSON job list
+    const applicant_profiles = JSON.parse('{{ applicant_profiles_json|escapejs }}');
 
+    /*
     // Test marker
     var marker = L.marker([33.774841, -84.396407]).addTo(map); // Location of CS2340 classroom
     marker.bindPopup("<b>CS2340 Developer</b><br>260 4th Street NW<br>Atlanta, GA 30332")
+    */
 
+    var mcg = L.markerClusterGroup();
+
+    applicant_profiles.forEach(profile => {
+            // if coordinates have been successfully parsed into the profile based on provided location
+            if (profile.fields.latitude && profile.fields.longitude) {
+                // access coordinates
+                lat = profile.fields.latitude
+                lng = profile.fields.longitude
+
+                console.log(lat, lng);
+
+                // add marker to cluster group
+                marker = L.marker([lat, lng]).addTo(mcg)
+                marker.bindPopup(`<b>${profile.fields.location}</b><br>${profile.fields.headline}`)
+            }
+        });
+    
+        // add cluster group to map
+    mcg.addTo(map);
 
 </script>
 
