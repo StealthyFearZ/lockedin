@@ -21,15 +21,76 @@
                         type="button" data-bs-toggle="dropdown">
                     <i class="fas fa-ellipsis-v"></i>
                 </button>
+                <ul class="dropdown-menu">
+                    <li><h6 class="dropdown-header">Move to:</h6></li>
+                    <!-- Applied Link -->
+                    <li>
+                        <form method="POST" action="{% url 'jobs.update_application_status' app.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="AP">
+                            <button type="submit" class="dropdown-item">
+                                <i class="fas fa-inbox"></i> Applied
+                            </button>
+                        </form>
+                    </li>
+                    <li>
+                    <!-- Review Link -->
+                        <form method="POST" action="{% url 'jobs.update_application_status' app.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="RE">
+                            <button type="submit" class="dropdown-item">
+                                <i class="fas fa-search"></i> Review
+                            </button>
+                        </form>
+                    </li>
+                    <li>
+                    <!-- Interview Link -->
+                        <form method="POST" action="{% url 'jobs.update_application_status' app.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="IN">
+                            <button type="submit" class="dropdown-item">
+                                <i class="fas fa-comments"></i> Interview
+                            </button>
+                        </form>
+                    </li>
+                    <li>
+                    <!-- Offer Link -->
+                        <form method="POST" action="{% url 'jobs.update_application_status' app.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="OF">
+                            <button type="submit" class="dropdown-item">
+                                <i class="fas fa-gift"></i> Offer
+                            </button>
+                        </form>
+                    </li>
+                    <li>
+                    <!-- Closed Link-->
+                        <form method="POST" action="{% url 'jobs.update_application_status' app.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="CL">
+                            <button type="submit" class="dropdown-item">
+                                <i class="fas fa-times-circle"></i> Closed
+                            </button>
+                        </form>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                    <!-- Profile Link-->
+                        <a class="dropdown-item" href="{% url 'profiles.detail' app.user.username %}" target="_blank">
+                            <i class="fas fa-user"></i> View Profile
+                        </a>
+                    </li>
+                </ul>   
             </div>
-            <!-- Add The Skills Section -->
-            <div>
+        </div>
 
-            </div>
-            <!-- Add The Notes section-->
-            <div>
+        <!-- Add The Skills Section -->
+        <div>
 
-            </div>
+        </div>
+        <!-- Add The Notes section-->
+        <div>
+
         </div>
     </div>
 </div>
