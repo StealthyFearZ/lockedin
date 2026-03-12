@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Profile, Experience, Education
+from .models import Profile, Experience, Education, ProfileSearch
 from .forms import ProfileForm, ExperienceForm, EducationForm
 
 # Profile Views
@@ -58,15 +58,24 @@ def profile_list(request):
             Profile.objects.filter(experiences__job__icontains=search_term) | 
             Profile.objects.filter(educations__field_of_study__icontains=search_term)
             ).distinct() # Filter by skills, location, and projects. Client said Projects can be exchanged for Job Experience and College Field of Study
+            if request.GET.get("save") == "true" and search_term:
+                ProfileSearch.objects.create(
+                    user=request.user,
+                    search_term=search_term
+                )  
     else:
         profiles = Profile.objects.all()
 
     # View all the profiles, sort currently by time of creation
     profiles = profiles.select_related('user').order_by('-time_created')
+    searches = ProfileSearch.objects.filter(user=request.user)
     context = {
         'profiles': profiles,
-        'template_data': {'title': 'Browse Profiles'}
+        'template_data': {'title': 'Browse Profiles'},
+        'searches' : searches
     }
+    if search_term: 
+        context['search'] = search_term    
     return render(request, 'profiles/profile_list.html', context)
 
 # Experience Views
