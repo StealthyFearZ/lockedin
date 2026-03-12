@@ -76,9 +76,10 @@
                            class="btn btn-primary btn-sm">
                             <i class="fas fa-eye"></i> View Profile
                         </a>
-                        <div class="btn btn-primary btn-sm">
+                        <a href="{% url 'conversation.detail' username=profile.user.username%}""
+                            class="btn btn-primary btn-sm">
                             <i class="fas fa-message"></i> Send Message
-                        </div>
+                        </a>
                         {% if profile.email %}
                             <a href="mailto:{{ profile.email }}" target="_blank" class="btn btn-sm btn-primary me-2">
                                 <i class="fas fa-briefcase"></i> Email
