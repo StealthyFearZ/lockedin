@@ -95,8 +95,22 @@
         {% endif %}
 
         <!-- Add The Notes section-->
-        <div>
-
+        <div class="mt-2">
+            <!-- Add Option For Note -->
+            <form method="POST" action="{% url 'jobs.update_application_note' app.id %}" 
+                  class="note-form">
+                {% csrf_token %}
+                <div class="input-group input-group-sm">
+                    <!-- Load in Note? YES IT DOES LETTSSSS GOOOOO -->
+                    <input type="text" name="note" class="form-control" 
+                           placeholder="Add note..." value="{{ app.note }}"
+                           maxlength="150">
+                    <!--Button to save Note for Recruiters-->
+                    <button type="submit" class="btn btn-outline-secondary">
+                        <i class="fas fa-save"></i>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
