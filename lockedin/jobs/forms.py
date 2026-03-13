@@ -76,7 +76,10 @@ class JobForm(forms.ModelForm):
                 location_text.upper() != "NO LOCATION"):
             
             geolocator = Nominatim(user_agent="lockedin_app")   # create geolocating client
-            result = geolocator.geocode(location_text)          # geocode location text
+            try: 
+                result = geolocator.geocode(location_text)          # geocode location text
+            except:
+                result = None
 
             if result:  # if we get a valid response, overwrite coordinate fields
                 job.latitude = result.latitude

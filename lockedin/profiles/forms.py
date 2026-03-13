@@ -76,7 +76,10 @@ class ProfileForm(forms.ModelForm):
         location_text = self.cleaned_data.get('location')   # clean location text
         if location_text:                                   # if not holding null
             geolocator = Nominatim(user_agent="lockedin_app")   # create geolocating client
-            result = geolocator.geocode(location_text)          # geocode location text
+            try: 
+                result = geolocator.geocode(location_text)          # geocode location text
+            except:
+                result = None
 
             if result:  # if we get a valid response
                 profile.latitude = result.latitude
