@@ -14,7 +14,7 @@ def profile_view(request, username=None):
         user = get_object_or_404(User, username=username)
     else:
         user = request.user
-    
+
     profile, created = Profile.objects.get_or_create(user=user)
 
     context = {
@@ -33,14 +33,14 @@ def profile_edit(request):
         search_term = search.search_term.lower()
 
         fulfills = (
-            search_term in (profile.skills or "").lower() or 
+            search_term in (profile.skills or "").lower() or
             search_term in (profile.location or "").lower() or
-            any(search_term in (experience.job or "").lower() or search_term in (experience.location or "").lower() 
+            any(search_term in (experience.job or "").lower() or search_term in (experience.location or "").lower()
                 for experience in profile.experiences.all()) or
-            any(search_term in (education.field_of_study or "").lower() or search_term in (education.location or "").lower() 
+            any(search_term in (education.field_of_study or "").lower() or search_term in (education.location or "").lower()
                 for education in profile.educations.all())
         )
-        
+
         if fulfills:
             Notification.objects.get_or_create(
                 user=search.user,
@@ -58,7 +58,7 @@ def profile_edit(request):
             return redirect('profiles.detail', username=request.user.username)
     else:
         form = ProfileForm(instance=profile)
-    
+
     context = {
         'form' : form,
         'profile' : profile,
@@ -73,18 +73,18 @@ def profile_list(request):
     if search_term:
         profiles = (
             Profile.objects.filter(skills__icontains=search_term) |
-            Profile.objects.filter(location__icontains=search_term)| 
+            Profile.objects.filter(location__icontains=search_term)|
             Profile.objects.filter(experiences__location__icontains=search_term) | # check locations from experiences as well
             Profile.objects.filter(educations__location__icontains=search_term) | # check locations from education as well
-            Profile.objects.filter(experiences__job__icontains=search_term) | 
+            Profile.objects.filter(experiences__job__icontains=search_term) |
             Profile.objects.filter(educations__field_of_study__icontains=search_term)).distinct() # Filter by skills, location, and projects. Client said Projects can be exchanged for Job Experience and College Field of Study
-        
+
         #if user clicks save button then a ProfileSearch object is created
         if request.GET.get("save") == "true" and search_term:
             ProfileSearch.objects.create(
                 user=request.user,
                 search_term=search_term
-            )  
+            )
     else:
         profiles = Profile.objects.all()
 
@@ -96,8 +96,8 @@ def profile_list(request):
         'template_data': {'title': 'Browse Profiles'},
         'searches' : searches
     }
-    if search_term: 
-        context['search'] = search_term    
+    if search_term:
+        context['search'] = search_term
     return render(request, 'profiles/profile_list.html', context)
 
 # Experience Views
@@ -160,7 +160,7 @@ def delete_experience(request, exp_id):
         work_exp.delete()
         messages.success(request, 'Experience Deleted!')
         return redirect('profiles.detail', username=request.user.username)
-    
+
     context = {
         'work_exp' : work_exp,
         'template_data' : {'title' : 'Delete Experience'}
@@ -226,7 +226,7 @@ def delete_education(request, exp_id):
         edu_exp.delete()
         messages.success(request, 'Education Deleted!')
         return redirect('profiles.detail', username=request.user.username)
-    
+
     context = {
         'edu_exp' : edu_exp,
         'template_data' : {'title' : 'Delete Education'}
