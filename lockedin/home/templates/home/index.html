@@ -17,9 +17,8 @@
     </div>
     {% if user.is_authenticated %}
       {% if template_data.profile.role == 'employee'%}
-        <h2>Your Feed</h2>
+        <h2>Your Feed</h2>    
         <hr/>
-
         <!--Jobs that match skills in feed-->
         <div class="row mt-3">
           {% for job in template_data.jobs %}
@@ -90,7 +89,22 @@
           {% endif %} 
           {% endfor %}
         {% elif template_data.profile.role == 'recruiter' %} <!--If role is recruiter-->
-          <h2>Your Feed</h2>
+        <div class="col-auto mb-2">
+          <div><h2 class="justify-content-start">Your Feed</h2></div>
+          <div class="dropdown justify-content-end">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Notifications
+            </button>
+            <ul class="dropdown-menu">
+              {% for notification in template_data.notifications %}
+                <div class="alert alert-success justify-content-center" role="alert">
+                  <p>New Search Candidate Match!</p>
+                  <a href="profiles/{{notification.profile.user.username}}/">{{ notification.profile.user.username }}</a>
+                </div>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>  
           <hr/>
 
           {% if template_data.posted_jobs %}

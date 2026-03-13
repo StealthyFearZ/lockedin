@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from jobs.models import Job
 from django.core.validators import URLValidator
 
 # Create your models here.
@@ -100,9 +99,9 @@ class ProfileSearch(models.Model):
     
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="matched_job")
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="notification")
     read = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.username + " | " + self.job.title
+        return self.user.username + " | " + self.profile.user.username

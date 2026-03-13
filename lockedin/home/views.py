@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from jobs.models import Job
-from profiles.models import Profile
+from profiles.models import Profile, Notification
 
 # Create your views here.
 def index(request):
@@ -33,6 +33,8 @@ def index(request):
                                 recommendation_skills.append(skill.title())
 
                 template_data['skills'] = recommendation_skills
+                notifications = Notification.objects.filter(user=request.user).order_by('-created')[:10]
+                template_data['notifications'] = notifications
 
     return render(request, 'home/index.html', {
         'template_data': template_data})

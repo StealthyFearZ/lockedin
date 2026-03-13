@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Profile, Experience, Education, ProfileSearch
+from .models import Profile, Experience, Education, ProfileSearch, Notification
 from .forms import ProfileForm, ExperienceForm, EducationForm
 
 # Profile Views
@@ -28,6 +28,27 @@ def profile_view(request, username=None):
 def profile_edit(request):
     # Create / Update Profile
     profile, created = Profile.objects.get_or_create(user=request.user)
+    searches = ProfileSearch.objects.all()
+    for search in searches:
+        search_term = search.search_term.lower()
+
+        fulfills = (
+            search_term in (profile.skills or "").lower() or 
+            search_term in (profile.location or "").lower() or
+            any(search_term in (experience.job or "").lower() or search_term in (experience.location or "").lower() 
+                for experience in profile.experiences.all()) or
+            any(search_term in (education.field_of_study or "").lower() or search_term in (education.location or "").lower() 
+                for education in profile.educations.all())
+        )
+        
+        if fulfills:
+            Notification.objects.get_or_create(
+                user=search.user,
+                profile=profile,
+                defaults={
+                    "read" : False
+                }
+            )
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
