@@ -89,15 +89,16 @@
           {% endif %} 
           {% endfor %}
         {% elif template_data.profile.role == 'recruiter' %} <!--If role is recruiter-->
-        <div class="col-auto mb-2">
+        <div class="d-flex justify-content-between align-items-start mb-3">
           <div><h2 class="justify-content-start">Your Feed</h2></div>
           <div class="dropdown justify-content-end">
             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Notifications
             </button>
+            <!--dropdown for notifications-->
             <ul class="dropdown-menu">
               {% for notification in template_data.notifications %}
-                <div class="alert alert-success justify-content-center" role="alert">
+                <div class="alert alert-success mb-2" role="alert">
                   <p>New Search Candidate Match!</p>
                   <a href="profiles/{{notification.profile.user.username}}/">{{ notification.profile.user.username }}</a>
                 </div>

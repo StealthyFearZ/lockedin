@@ -78,6 +78,8 @@ def profile_list(request):
             Profile.objects.filter(educations__location__icontains=search_term) | # check locations from education as well
             Profile.objects.filter(experiences__job__icontains=search_term) | 
             Profile.objects.filter(educations__field_of_study__icontains=search_term)).distinct() # Filter by skills, location, and projects. Client said Projects can be exchanged for Job Experience and College Field of Study
+        
+        #if user clicks save button then a ProfileSearch object is created
         if request.GET.get("save") == "true" and search_term:
             ProfileSearch.objects.create(
                 user=request.user,

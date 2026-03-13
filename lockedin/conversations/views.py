@@ -8,10 +8,13 @@ from .models import Message
 def conversation(request, username):
     other_user = get_object_or_404(User, username=username)
 
-    messages = Message.objects.filter(
-        (Q(sender=request.user) & Q(recipient=other_user)) |
-        (Q(sender=other_user) & Q(recipient=request.user))
-    ).order_by('sent')
+    sent_messages = Message.objects.filter(sender=request.user, recipient=other_user)
+
+    recieved_messages = Message.objects.filter(sender=other_user, recipient=request.user)
+
+    # Combined messages and creates union for them
+
+    messages = sent_messages.union(recieved_messages).order_by('-sent')
 
     if request.method == "POST":
         content = request.POST.get("content", "").strip()

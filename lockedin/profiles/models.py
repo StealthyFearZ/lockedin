@@ -90,6 +90,7 @@ class Education(models.Model):
         ordering = ['-start_date']
 
 class ProfileSearch(models.Model):
+    #saves the search term and user associated with it
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile_search")
     search_term = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
@@ -98,6 +99,7 @@ class ProfileSearch(models.Model):
         return self.user.username + " | " + self.search_term
     
 class Notification(models.Model):
+    #simple model that has a user and a few attributes
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="notification")
     read = models.BooleanField(default=False)
